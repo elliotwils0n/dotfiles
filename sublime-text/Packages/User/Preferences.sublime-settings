@@ -1,0 +1,13 @@
+// Settings in here override those in "Default/Preferences.sublime-settings",
+// and are overridden in turn by syntax-specific settings.
+{
+    "translate_tabs_to_spaces": true,
+    "remember_workspace": false,
+    "hot_exit": "disabled",
+    "font_size": 12,
+    "vintage_start_in_command_mode": true,
+    "vintage_use_clipboard": true,
+    "vintage_ctrl_keys": true,
+    "relative_line_numbers": true,
+    "ignored_packages": [],
+}
