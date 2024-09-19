@@ -1,0 +1,28 @@
+[core]
+    editor = nvim
+
+[user]
+    name = elliotwils0n
+    email = ewils0n@protonmail.ch
+    signingkey = A2E0D7C789F8F1F3
+
+[commit]
+    gpgsign = true
+
+[tag]
+    gpgsign = true
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+[alias]
+    s = status
+
+[init]
+    defaultBranch = master
+
+[includeIf "gitdir:~/projects/work/"]
+    path = ~/projects/work/.gitconfig

@@ -1,0 +1,3 @@
+home/.gnupg/**
+!home/.gnupg/scdaemon.conf
+!home/.gnupg/gpg-agent.conf
