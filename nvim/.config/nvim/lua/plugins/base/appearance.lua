@@ -5,11 +5,12 @@ return {
     priority = 1000,
     config = function()
       require("tokyonight").setup({
+        cache = true,
         style = "night",
-        transparent = false,
+        transparent = true,
         styles = {
           sidebars = "normal",
-          floats = "normal",
+          floats = "transparent",
         },
         dim_inactive = true,
       })
