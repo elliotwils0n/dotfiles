@@ -53,6 +53,9 @@ nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
 
+" plugin/filetype.vim
+autocmd BufRead,BufNewFile *.h set filetype=c
+
 " after/ftplugin/<ft>.vim
 autocmd FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=2
 autocmd FileType go  setlocal noexpandtab
