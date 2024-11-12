@@ -8,6 +8,7 @@ gpgconf --launch gpg-agent
 export EDITOR="nvim"
 
 alias ls="ls --color=auto"
+alias vim="nvim"
 
 if [[ "$DESKTOP_SESSION" == "gnome" ]]; then
     alias toggle-animations='gsettings set org.gnome.desktop.interface enable-animations \
