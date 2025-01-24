@@ -9,12 +9,12 @@ stow -t $HOME -Sv <package>
 
 ## Downloads
 
-| Utilities               | Programming       | Code Editors              | Others                        |
-| ----------------------- | ----------------- | ------------------------- | ----------------------------- |
-| [Docker Engine][docker] | [Rust][rust]      | [Neovim][neovim]          | [Nerd fonts][nerd-fonts]      |
-|                         | [Go][go]          | [Sublime Text][sublime]   | [Roboto font][roboto-font]    |
-|                         | [SDKMAN!][sdkman] | [IntelliJ Idea][intellij] |                               |
-|                         | [nvm][nvm]        |                           |                               |
+| Utilities               | Programming       | Code Editors              |
+| ----------------------- | ----------------- | ------------------------- |
+| [Docker Engine][docker] | [Rust][rust]      | [Neovim][neovim]          |
+|                         | [Go][go]          | [Sublime Text][sublime]   |
+|                         | [SDKMAN!][sdkman] | [IntelliJ Idea][intellij] |
+|                         | [nvm][nvm]        |                           |
 
 <!-- Utilities -->
 [docker]: https://docs.docker.com/engine/install
@@ -27,9 +27,6 @@ stow -t $HOME -Sv <package>
 [neovim]: https://github.com/neovim/neovim/blob/master/BUILD.md
 [sublime]: https://www.sublimetext.com/download
 [intellij]: https://www.jetbrains.com/help/idea/installation-guide.html
-<!-- Others -->
-[nerd-fonts]: https://www.nerdfonts.com/font-downloads
-[roboto-font]: https://fonts.google.com/specimen/Roboto
 
 ## Apps
 ``` shell
