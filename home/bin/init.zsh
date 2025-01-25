@@ -54,9 +54,17 @@ precmd() {
     vcs_info
 }
 zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' unstagedstr " $(colored 'U' 'red')"
 zstyle ':vcs_info:*' stagedstr " $(colored 'S' 'green')"
-zstyle ':vcs_info:*' formats "[$(colored '%s' 'blue' 'bold'): $(colored '%b' 'magenta' 'bold')%u%c] "
+zstyle ':vcs_info:*' formats "[$(colored '%s' 'blue' 'bold'): $(colored '%b' 'magenta' 'bold')%m%u%c] "
+
++vi-git-untracked(){
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep '??' &> /dev/null ; then
+        hook_com[misc]+=" %{$fg[red]%}?%{$reset_color%}"
+    fi
+}
 
 # Prompt
 setopt PROMPT_SUBST
