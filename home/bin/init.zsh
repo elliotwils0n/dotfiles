@@ -14,10 +14,10 @@ setopt share_history          # share command history data
 # Key bindings
 bindkey -v # Vi mode
 bindkey "^?" backward-delete-char # Backspace
-bindkey "^H" backward-kill-word   # Ctrl + Backspace
-bindkey "^[[3;5~" kill-word       # Ctrl + Delete
-bindkey "^[[1;5D" backward-word   # Ctrl + Left
-bindkey "^[[1;5C" forward-word    # Ctrl + Right
+bindkey "^[^?" backward-kill-word # Alt + Backspace
+bindkey "^[[3;3~" kill-word       # Alt + Delete
+bindkey "^[[1;3D" backward-word   # Alt + Left
+bindkey "^[[1;3C" forward-word    # Alt + Right
 
 # Search history forward
 autoload -U up-line-or-beginning-search
