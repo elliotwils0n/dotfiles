@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [[ "$DESKTOP_SESSION" != "gnome" ]]; then
+if [[ -z "$(echo $XDG_CURRENT_DESKTOP | awk '/GNOME/')" ]]; then
     echo "Abort: not a gnome desktop environment."
     return 1 2>/dev/null
     exit 1 # This will get executed if the above failed.
