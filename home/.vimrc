@@ -2,7 +2,7 @@
 let g:mapleader = " "
 
 syntax on
-colorscheme retrobox
+colorscheme default
 
 " plugin/set.vim
 set number
