@@ -38,6 +38,6 @@ return {
       dapui.close()
     end
 
-    require("plugins.tweaks.dap").setup()
+    require("plugins.tweaks.debug").setup()
   end,
 }

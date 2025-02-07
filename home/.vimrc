@@ -1,9 +1,6 @@
 " init.vim
 let g:mapleader = " "
 
-syntax on
-colorscheme default
-
 " plugin/set.vim
 set number
 set relativenumber
