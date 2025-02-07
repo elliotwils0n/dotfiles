@@ -17,6 +17,7 @@ set autoindent
 
 set nowrap
 set scrolloff=10
+set sidescrolloff=10
 
 set smartcase
 set ignorecase
