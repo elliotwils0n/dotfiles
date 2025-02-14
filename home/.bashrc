@@ -6,6 +6,9 @@ bind 'set colored-stats on'
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
 alias vim="nvim"
 
 export EDITOR="nvim"

@@ -1,9 +1,9 @@
 source $HOME/bin/init.zsh
 
+[[ -x "/usr/bin/dircolors" ]] && eval "$(dircolors -b)"
+
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
-
-[[ -x "/usr/bin/dircolors" ]] && eval "$(dircolors -b)"
 
 alias ls="ls --color=auto"
 alias vim="nvim"
