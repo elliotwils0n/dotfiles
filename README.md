@@ -1,10 +1,15 @@
 # dotfiles
-Configuration files.
+Configuration files are managed with GNU Stow.
 
 ## Installation
-Configuration files are managed with GNU Stow.
 ```shell
-stow -t $HOME -Sv <package>
+stow -t $HOME -Sv home nvim
+stow -t $HOME -Sv --no-folding gpg
+```
+
+## Uninstalling
+```shell
+stow -t $HOME -Dv home nvim gpg
 ```
 
 ## Downloads
