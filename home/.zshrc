@@ -5,10 +5,10 @@ gpgconf --launch gpg-agent
 
 [[ -x "/usr/bin/dircolors" ]] && eval "$(dircolors -b)"
 
-export EDITOR="nvim"
-
 alias ls="ls --color=auto"
 alias vim="nvim"
+
+export EDITOR="nvim"
 
 if [[ -z "$(echo $XDG_CURRENT_DESKTOP | awk '/GNOME/')" ]]; then
     alias toggle-animations='gsettings set org.gnome.desktop.interface enable-animations \
@@ -24,5 +24,5 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
