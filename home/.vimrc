@@ -1,5 +1,5 @@
 syntax enable
-colorscheme zaibatsu
+colorscheme koehler
 
 let g:mapleader = " "
 let g:netrw_banner = 0
