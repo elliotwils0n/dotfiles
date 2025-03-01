@@ -15,3 +15,5 @@ require("lazy").setup({
   spec = { import = "plugins.base" },
   change_detection = { notify = false },
 })
+
+vim.cmd.colorscheme "catppuccin"

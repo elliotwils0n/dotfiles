@@ -1,7 +1,6 @@
 return {
   {
     "folke/tokyonight.nvim",
-    enabled = false,
     lazy = false,
     priority = 1000,
     config = function()
@@ -13,12 +12,10 @@ return {
           floats = "transparent",
         },
       })
-      vim.cmd.colorscheme "tokyonight"
     end,
   },
   {
     "catppuccin/nvim",
-    enabled = true,
     lazy = false,
     priority = 1000,
     name = "catpuccin",
@@ -28,7 +25,6 @@ return {
         transparent_background = true,
         default_integrations = true,
       })
-      vim.cmd.colorscheme "catppuccin"
     end,
   },
 }
