@@ -6,6 +6,7 @@ return {
     config = function()
       require("tokyonight").setup({
         style = "night",
+        light_style = "day",
         transparent = true,
         styles = {
           sidebars = "normal",
@@ -21,9 +22,12 @@ return {
     name = "catpuccin",
     config = function()
       require("catppuccin").setup({
-        flavour = "mocha",
+        flavour = "auto",
+        background = {
+          light = "latte",
+          dark = "mocha",
+        },
         transparent_background = true,
-        default_integrations = true,
       })
     end,
   },
