@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ -z "$(echo $XDG_CURRENT_DESKTOP | awk '/GNOME/')" ]]; then
     echo "Abort: not a gnome desktop environment."
@@ -10,3 +10,5 @@ for i in {1..9}; do
     gsettings set "org.gnome.shell.keybindings" "switch-to-application-$i" "[]"
     gsettings set "org.gnome.desktop.wm.keybindings" "switch-to-workspace-$i" "['<Super>$i']"
 done
+
+gsettings set "org.gnome.Terminal.Legacy.Settings" "headerbar" false
