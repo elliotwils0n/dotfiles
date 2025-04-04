@@ -1,6 +1,5 @@
 return {
   "mfussenegger/nvim-dap",
-  dependencies = {},
   config = function()
     local dap = require("dap")
     local widgets = require("dap.ui.widgets")

@@ -4,7 +4,7 @@ return {
   config = function()
     require("lint").linters_by_ft = require("plugins.tweaks.lang").linters
 
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
       callback = function()
         require("lint").try_lint()
       end,
