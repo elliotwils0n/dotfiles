@@ -53,6 +53,12 @@ set signcolumn=yes
 set colorcolumn=80
 set showtabline=1
 
+set nofoldenable
+set foldmethod=manual
+set foldlevel=99
+
+set undofile
+
 set wildmenu
 set wildmode=list:longest
 

@@ -45,6 +45,12 @@ vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "80"
 vim.opt.showtabline = 1
 
+vim.opt.foldenable = false
+vim.opt.foldmethod = "manual"
+vim.opt.foldlevel = 99
+
+vim.opt.undofile = true
+
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
 
