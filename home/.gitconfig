@@ -20,6 +20,7 @@
 
 [alias]
     s = status
+    lo = log --oneline --max-count 10
 
 [init]
     defaultBranch = master
