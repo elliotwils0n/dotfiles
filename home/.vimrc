@@ -44,9 +44,9 @@ set ignorecase
 set nohlsearch
 set incsearch
 
+set background=dark
 set number
 set relativenumber
-set background=dark
 set guicursor=""
 set cursorline
 set signcolumn=yes

@@ -36,9 +36,9 @@ vim.opt.ignorecase = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+vim.opt.background = "dark"
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.background = "dark"
 vim.opt.guicursor = ""
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
