@@ -15,6 +15,7 @@ return {
     require("mason").setup()
     require("mason-lspconfig").setup({
       ensure_installed = require("plugins.tweaks.lang").servers,
+      automatic_enable = true,
       handlers = {
         function(server_name)
           require("lspconfig")[server_name].setup({
