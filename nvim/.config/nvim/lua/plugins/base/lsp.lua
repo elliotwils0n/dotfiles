@@ -25,6 +25,11 @@ return {
       },
     })
 
+    vim.diagnostic.config({
+      virtual_text = true,
+      virtual_lines = false,
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
         local opts = { buffer = args.buf }
@@ -38,18 +43,16 @@ return {
         vim.keymap.set("n", "<leader>f", function()
           vim.lsp.buf.format { async = true }
         end, opts)
+        vim.keymap.set("n", "<leader>h", function()
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+        end, opts)
         vim.keymap.set("n", "[d", function()
           vim.diagnostic.goto_next()
         end, opts)
         vim.keymap.set("n", "]d", function()
           vim.diagnostic.goto_prev()
         end, opts)
-        vim.keymap.set("n", "<leader>h", function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-        end, opts)
       end,
     })
-
-    require("plugins.tweaks.lang").setup_lsp({ capabilities = capabilities })
   end,
 }

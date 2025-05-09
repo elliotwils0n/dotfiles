@@ -7,7 +7,7 @@ vim.g.netrw_liststyle = 3
 vim.g.netrw_browse_split = 4
 vim.g.netrw_winsize = 20
 
-vim.keymap.set("n", "-", "<CMD>Vex<CR>")
+vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
@@ -49,13 +49,11 @@ vim.opt.foldenable = false
 vim.opt.foldmethod = "manual"
 vim.opt.foldlevel = 99
 
-vim.opt.undofile = true
-
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
 
+vim.opt.undofile = true
 vim.opt.clipboard:append { "unnamedplus" }
-vim.opt.path:append { "**" }
 
 vim.filetype.add {
   extension = {

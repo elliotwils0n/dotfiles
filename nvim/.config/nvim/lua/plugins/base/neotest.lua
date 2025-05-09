@@ -4,7 +4,6 @@ return {
     "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
     "nvim-treesitter/nvim-treesitter",
-    -- adapters
     "rouge8/neotest-rust",
     "nvim-neotest/neotest-go",
     "nvim-neotest/neotest-python",

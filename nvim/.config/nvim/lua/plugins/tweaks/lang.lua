@@ -15,21 +15,4 @@ M.servers = {
   "rust_analyzer", "gopls", "pyright",
 }
 
-M.setup_lsp = function(config)
-  local lspconfig = require("lspconfig")
-
-  lspconfig.lua_ls.setup({
-    capabilities = config.capabilities,
-    settings = {
-      Lua = {
-        workspace = {
-          library = {
-            vim.env.VIMRUNTIME .. "/lua",
-          },
-        },
-      },
-    },
-  })
-end
-
 return M

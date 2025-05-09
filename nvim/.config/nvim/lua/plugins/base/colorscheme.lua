@@ -19,7 +19,7 @@ return {
     "catppuccin/nvim",
     lazy = false,
     priority = 1000,
-    name = "catpuccin",
+    name = "catppuccin",
     config = function()
       require("catppuccin").setup({
         flavour = "auto",

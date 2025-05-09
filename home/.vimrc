@@ -7,7 +7,7 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 20
 
-nnoremap - <CMD>Vex<CR>
+nnoremap - <CMD>Vex!<CR>
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 nnoremap n nzz
@@ -57,13 +57,11 @@ set nofoldenable
 set foldmethod=manual
 set foldlevel=99
 
-set undofile
-
 set wildmenu
 set wildmode=list:longest
 
+set undofile
 set clipboard+=unnamedplus
-set path+=**
 
 autocmd BufRead,BufNewFile *.h set filetype=c
 
