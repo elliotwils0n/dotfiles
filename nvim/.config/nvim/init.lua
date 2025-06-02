@@ -75,5 +75,11 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.opt_local.expandtab = false
   end
 })
+vim.api.nvim_create_autocmd("Filetype", {
+  pattern = "rust",
+  callback = function()
+    vim.opt_local.colorcolumn = "100"
+  end
+})
 
 require("plugins")

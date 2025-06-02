@@ -65,5 +65,6 @@ set clipboard+=unnamedplus
 
 autocmd BufRead,BufNewFile *.h set filetype=c
 
-autocmd FileType lua setlocal tabstop=2 softtabstop=2 shiftwidth=2
-autocmd FileType go  setlocal noexpandtab
+autocmd FileType lua  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd FileType go   setlocal noexpandtab
+autocmd FileType rust setlocal colorcolumn=100
