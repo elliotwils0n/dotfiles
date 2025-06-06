@@ -62,11 +62,9 @@ vim.filetype.add {
 }
 
 vim.api.nvim_create_autocmd("Filetype", {
-  pattern = "lua",
+  pattern = "rust",
   callback = function()
-    vim.opt_local.tabstop = 2
-    vim.opt_local.softtabstop = 2
-    vim.opt_local.shiftwidth = 2
+    vim.opt_local.colorcolumn = "100"
   end
 })
 vim.api.nvim_create_autocmd("Filetype", {
@@ -76,7 +74,15 @@ vim.api.nvim_create_autocmd("Filetype", {
   end
 })
 vim.api.nvim_create_autocmd("Filetype", {
-  pattern = "rust",
+  pattern = "lua",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end
+})
+vim.api.nvim_create_autocmd("Filetype", {
+  pattern = "java",
   callback = function()
     vim.opt_local.colorcolumn = "100"
   end
