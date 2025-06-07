@@ -53,6 +53,7 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
 
 vim.opt.undofile = true
+--vim.opt.undodir = "~/.local/state/nvim/undo/"
 vim.opt.clipboard:append { "unnamedplus" }
 
 vim.filetype.add {

@@ -61,6 +61,7 @@ set wildmenu
 set wildmode=list:longest
 
 set undofile
+set undodir=~/.vim/undo/
 set clipboard+=unnamedplus
 
 autocmd BufRead,BufNewFile *.h set filetype=c
