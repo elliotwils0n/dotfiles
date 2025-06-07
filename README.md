@@ -37,3 +37,9 @@ stow -t $HOME -Dv home nvim gpg
 ``` shell
 gnupg tmux stow ripgrep tree
 ```
+
+## Init for remote servers
+```shell
+wget -O ~/.vimrc  https://raw.githubusercontent.com/elliotwils0n/dotfiles/refs/heads/master/home/.vimrc
+wget -O ~/.bashrc https://raw.githubusercontent.com/elliotwils0n/dotfiles/refs/heads/master/home/.bashrc
+```
