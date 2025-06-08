@@ -35,7 +35,7 @@ stow -t $HOME -Dv home nvim gpg
 
 ## Apps
 ``` shell
-gnupg tmux stow ripgrep tree
+gnupg tmux stow ripgrep tree bash-completion
 ```
 
 ## Init for remote servers
