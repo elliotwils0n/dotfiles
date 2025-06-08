@@ -1,4 +1,5 @@
 source /etc/skel/.bashrc
+[[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
 
 set -o vi
 
