@@ -1,5 +1,5 @@
-source /etc/skel/.bashrc
-[[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
 set -o vi
 
@@ -9,6 +9,12 @@ bind 'set colored-stats on'
 bind 'TAB: menu-complete'
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias tree='tree -C'
+
+[[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
 
 _get_prompt() {
     local _prompt_status='$( [ $? -eq 0 ] && echo "\[\e[1;32m\]>\[\e[0m\]" || echo "\[\e[1;31m\]>\[\e[0m\]" )'
