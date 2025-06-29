@@ -1,5 +1,5 @@
 vim.cmd.syntax "enable"
-vim.cmd.colorscheme "koehler"
+vim.cmd.colorscheme "lunaperche"
 
 vim.g.mapleader = " "
 vim.g.netrw_banner = 0

@@ -1,5 +1,5 @@
 syntax enable
-colorscheme koehler
+colorscheme lunaperche
 
 let g:mapleader = " "
 let g:netrw_banner = 0
