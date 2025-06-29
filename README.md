@@ -16,7 +16,7 @@ stow -t $HOME -Dv home nvim gpg
 > [!NOTE]
 > For arch linux use pacman:
 > ```shell
-> pacman -S docker neovim rustup go nvm intellij-idea-community-edition
+> pacman -S docker neovim rustup go nvm
 > ```
 
 | Utilities                 | Programming       |
