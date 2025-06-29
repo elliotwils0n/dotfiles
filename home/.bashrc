@@ -1,6 +1,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+HISTSIZE=10000
+HISTFILESIZE=20000
+HISTCONTROL=ignoreboth
+PROMPT_COMMAND='history -a; history -n'
+
+shopt -s histappend
 set -o vi
 
 bind 'set completion-ignore-case on'
@@ -31,7 +37,7 @@ if type __git_ps1 >/dev/null 2>&1; then
     export GIT_PS1_SHOWDIRTYSTATE=1
     export GIT_PS1_SHOWUNTRACKEDFILES=1
     export GIT_PS1_SHOWCOLORHINTS=1
-    PROMPT_COMMAND='__git_ps1 "$(_get_prompt)" " "'
+    PROMPT_COMMAND='history -a; history -n; __git_ps1 "$(_get_prompt)" " "'
 else
     PS1="$(_get_prompt) "
 fi
