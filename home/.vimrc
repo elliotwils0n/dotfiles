@@ -7,11 +7,14 @@ let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 20
 
-nnoremap - <CMD>Vex!<CR>
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
+
+nnoremap - <CMD>Vex!<CR>
+nnoremap <C-t> <CMD>vert term<CR>
+tnoremap <Esc> <C-\><C-n>
 
 nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
