@@ -6,14 +6,12 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "rouge8/neotest-rust",
     "nvim-neotest/neotest-go",
-    "nvim-neotest/neotest-python",
   },
   config = function()
     require("neotest").setup({
       adapters = {
         require("neotest-rust"),
         require("neotest-go"),
-        require("neotest-python"),
       },
     })
 

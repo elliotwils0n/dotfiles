@@ -1,8 +1,8 @@
 local M = {}
 
 M.grammars = {
-  "rust", "go", "python",
-  "typescript", "javascript",
+  "rust", "go",
+  "python", "typescript", "javascript",
 }
 
 M.linters = {
@@ -15,8 +15,8 @@ M.linters = {
 
 M.servers = {
   "clangd", "lua_ls",
-  "rust_analyzer", "gopls", "pyright",
-  "ts_ls",
+  "rust_analyzer", "gopls",
+  "pyright", "ts_ls",
 }
 
 return M
