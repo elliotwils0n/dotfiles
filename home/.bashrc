@@ -7,6 +7,7 @@ HISTCONTROL=ignoreboth
 PROMPT_COMMAND='history -a; history -n'
 
 shopt -s histappend
+shopt -s cmdhist
 set -o vi
 
 bind 'set completion-ignore-case on'
