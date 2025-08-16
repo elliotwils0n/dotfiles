@@ -85,11 +85,5 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.opt_local.shiftwidth = 2
   end
 })
-vim.api.nvim_create_autocmd("Filetype", {
-  pattern = "java",
-  callback = function()
-    vim.opt_local.colorcolumn = "100"
-  end
-})
 
 require("plugins")
