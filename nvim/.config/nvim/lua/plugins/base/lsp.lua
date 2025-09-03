@@ -7,9 +7,9 @@ return {
   config = function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-    if pcall(require, "cmp_nvim_lsp") then
+    if pcall(require, "blink.cmp") then
       capabilities = vim.tbl_deep_extend(
-        "force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+        "force", capabilities, require("blink.cmp").get_lsp_capabilities())
     end
 
     require("mason").setup()
