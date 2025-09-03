@@ -28,6 +28,10 @@ return {
           dark = "mocha",
         },
         transparent_background = true,
+        float = {
+          transparent = true,
+          solid = false,
+        },
       })
     end,
   },
