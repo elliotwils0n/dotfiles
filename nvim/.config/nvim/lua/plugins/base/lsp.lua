@@ -1,28 +1,27 @@
 return {
-  "neovim/nvim-lspconfig",
+  "williamboman/mason.nvim",
   dependencies = {
-    "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
   },
   config = function()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    require("mason").setup()
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "clangd", "lua_ls",
+        "rust_analyzer", "gopls",
+        "pyright", "ts_ls",
+      }
+    })
 
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
     if pcall(require, "blink.cmp") then
       capabilities = vim.tbl_deep_extend(
         "force", capabilities, require("blink.cmp").get_lsp_capabilities())
     end
 
-    require("mason").setup()
-    require("mason-lspconfig").setup({
-      ensure_installed = require("plugins.tweaks.lang").servers,
-      automatic_enable = true,
-      handlers = {
-        function(server_name)
-          require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-          })
-        end,
-      },
+    vim.lsp.config("*", {
+      capabilities = capabilities,
     })
 
     vim.diagnostic.config({
