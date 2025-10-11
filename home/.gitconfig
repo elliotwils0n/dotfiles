@@ -4,7 +4,7 @@
 [user]
     name = elliotwils0n
     email = ewils0n@protonmail.ch
-    signingkey = 0A847A0DCE78D601
+    signingkey = 6BC4AD5441FDFC01
 
 [commit]
     gpgsign = true
