@@ -50,7 +50,7 @@ fi
 
 command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
 
-[[ -s "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+[[ -d "$HOME/.cargo/bin" ]] && PATH=$PATH:${HOME}/.cargo/bin
 
 [[ -d "/usr/local/go/bin" ]] && PATH=$PATH:/usr/local/go/bin
 
