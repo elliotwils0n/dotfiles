@@ -1,5 +1,5 @@
 syntax enable
-colorscheme lunaperche
+colorscheme habamax
 
 let g:mapleader = " "
 let g:netrw_banner = 0
@@ -17,16 +17,16 @@ nnoremap <C-t> <CMD>vert term<CR>
 tnoremap <Esc> <C-\><C-n>
 
 nnoremap <Up> <Nop>
-nnoremap <Down> <Nop>
-nnoremap <Left> <Nop>
-nnoremap <Right> <Nop>
 inoremap <Up> <Nop>
-inoremap <Down> <Nop>
-inoremap <Left> <Nop>
-inoremap <Right> <Nop>
 vnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+inoremap <Down> <Nop>
 vnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+inoremap <Left> <Nop>
 vnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+inoremap <Right> <Nop>
 vnoremap <Right> <Nop>
 
 set splitbelow

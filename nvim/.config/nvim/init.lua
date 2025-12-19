@@ -1,5 +1,5 @@
 vim.cmd.syntax "enable"
-vim.cmd.colorscheme "lunaperche"
+vim.cmd.colorscheme "habamax"
 
 vim.g.mapleader = " "
 vim.g.netrw_banner = 0
@@ -58,8 +58,6 @@ vim.opt.wildmode = "list:longest"
 vim.opt.undofile = true
 --vim.opt.undodir = "~/.local/state/nvim/undo/"
 vim.opt.clipboard:append { "unnamedplus" }
-
-vim.opt.winborder = "rounded"
 
 vim.filetype.add {
   extension = {

@@ -1,47 +1,39 @@
 return {
   "mfussenegger/nvim-dap",
-  dependencies = { "rcarriga/nvim-dap-ui" },
   config = function()
-    local dap, dapui = require("dap"), require("dapui")
-
-    dapui.setup()
+    local dap = require("dap")
+    local dap_widgets = require('dap.ui.widgets')
 
     vim.keymap.set("n", "<F1>", dap.continue)
     vim.keymap.set("n", "<F2>", dap.step_into)
     vim.keymap.set("n", "<F3>", dap.step_over)
     vim.keymap.set("n", "<F4>", dap.step_out)
     vim.keymap.set("n", "<F5>", dap.step_back)
-    vim.keymap.set("n", "<F12>", dap.restart)
-
+    vim.keymap.set("n", "<F13>", dap.restart)
     vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
     vim.keymap.set("n", "<leader>B", function()
       dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
     end)
-    vim.keymap.set("n", "<space>?", function()
-      dapui.eval(nil, { enter = true })
+    vim.keymap.set("n", "<leader>dr", function()
+      dap.repl.open()
     end)
-
-    dap.listeners.before.attach.dapui_config = function()
-      dapui.open()
-    end
-    dap.listeners.before.launch.dapui_config = function()
-      dapui.open()
-    end
-    dap.listeners.before.event_terminated.dapui_config = function()
-      dapui.close()
-    end
-    dap.listeners.before.event_exited.dapui_config = function()
-      dapui.close()
-    end
+    vim.keymap.set({ "n", "v" }, "<leader>dh", function()
+      dap_widgets.hover()
+    end)
+    vim.keymap.set({ "n", "v" }, "<leader>dp", function()
+      dap_widgets.preview()
+    end)
+    vim.keymap.set("n", "<leader>df", function()
+      dap_widgets.centered_float(dap_widgets.frames)
+    end)
+    vim.keymap.set("n", "<leader>ds", function()
+      dap_widgets.centered_float(dap_widgets.scopes)
+    end)
 
     -- adapters
     dap.adapters.codelldb = {
-      type = "server",
-      port = "${port}",
-      executable = {
-        command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
-        args = { "--port", "${port}" },
-      },
+      type = "executable",
+      command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
     }
     dap.adapters.delve = {
       type = "server",
@@ -51,7 +43,6 @@ return {
         args = { "dap", "-l", "127.0.0.1:${port}" },
       },
     }
-    dap.adapters.go = dap.adapters.delve
 
     -- configurations
     dap.configurations.c = {
