@@ -53,11 +53,14 @@ vim.opt.foldmethod = "manual"
 vim.opt.foldlevel = 99
 
 vim.opt.wildmenu = true
-vim.opt.wildmode = "list:longest"
+vim.opt.wildmode = "list:longest,full"
+vim.opt.wildignore:append { "*/target/*,*/node_modules/*,*/build/*" }
 
 vim.opt.undofile = true
 --vim.opt.undodir = "~/.local/state/nvim/undo/"
+
 vim.opt.clipboard:append { "unnamedplus" }
+vim.opt.path:append { "**" }
 
 vim.filetype.add {
   extension = {

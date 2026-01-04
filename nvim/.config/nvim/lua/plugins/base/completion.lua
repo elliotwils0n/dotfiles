@@ -4,10 +4,6 @@ return {
   build = "cargo build --release",
   dependencies = { "rafamadriz/friendly-snippets" },
   config = function()
-    require("blink.cmp").setup({
-      keymap = {
-        preset = "default",
-      },
-    })
+    require("blink.cmp").setup({})
   end,
 }

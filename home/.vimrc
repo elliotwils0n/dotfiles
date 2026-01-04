@@ -61,11 +61,14 @@ set foldmethod=manual
 set foldlevel=99
 
 set wildmenu
-set wildmode=list:longest
+set wildmode=list:longest,full
+set wildignore+=*/target/*,*/node_modules/*,*/build/*
 
 set undofile
 set undodir=~/.vim/undo/
+
 set clipboard+=unnamedplus
+set path+=**
 
 autocmd BufRead,BufNewFile *.h set filetype=c
 
