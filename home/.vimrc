@@ -1,5 +1,4 @@
 syntax enable
-colorscheme habamax
 
 let g:mapleader = " "
 let g:netrw_banner = 0
@@ -61,14 +60,10 @@ set foldmethod=manual
 set foldlevel=99
 
 set wildmenu
-set wildmode=list:longest,full
-set wildignore+=*/target/*,*/node_modules/*,*/build/*
+set wildmode=list:longest
 
 set undofile
-set undodir=~/.vim/undo/
-
-set clipboard+=unnamedplus
-set path+=**
+set undodir=~/.vim/undo//
 
 autocmd BufRead,BufNewFile *.h set filetype=c
 

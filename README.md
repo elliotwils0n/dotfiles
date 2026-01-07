@@ -3,13 +3,12 @@ Configuration files are managed with GNU Stow.
 
 ## Installation
 ```shell
-stow -t $HOME -Sv home nvim
-stow -t $HOME -Sv --no-folding gpg
+stow -t $HOME -Sv home
 ```
 
 ## Uninstalling
 ```shell
-stow -t $HOME -Dv home nvim gpg
+stow -t $HOME -Dv home
 ```
 
 ## Downloads
