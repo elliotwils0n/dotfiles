@@ -88,62 +88,93 @@ vim.api.nvim_create_autocmd("Filetype", {
 vim.opt.winborder = "rounded"
 
 -- Plugins
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
+local version = vim.version()
+if version.major >= 0 and version.minor >= 12 and version.patch >= 0 then
+  local gh = function(x) return "https://github.com/" .. x end
+  vim.pack.add({
+    { src = gh("catppuccin/nvim"),                        name = "catppucin" },
+    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
+    { src = gh("nvim-lua/plenary.nvim") },
+    { src = gh("tpope/vim-fugitive") },
+    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "master" },
+    { src = gh("nvim-treesitter/nvim-treesitter-context") },
+    { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
+    { src = gh("rafamadriz/friendly-snippets") },
+    { src = gh("williamboman/mason.nvim") },
+    { src = gh("neovim/nvim-lspconfig") },
+    { src = gh("mfussenegger/nvim-lint") },
+    { src = gh("mfussenegger/nvim-dap") },
+  })
+  vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(event)
+      local name, kind = event.data.spec.name, event.data.kind
+      local updated = kind == "install" or kind == "update"
+      if updated and name == "nvim-treesitter" then
+        vim.cmd("TSUpdate")
+      end
+      if updated and name == "blink.cmp" then
+        vim.system({ "cargo build --release" }, { cwd = event.data.path })
+      end
+    end
+  })
+else
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable",
+      lazypath,
+    })
+  end
+  vim.opt.rtp:prepend(lazypath)
+
+  require("lazy").setup({
+    {
+      "catppuccin/nvim",
+      lazy = false,
+      priority = 1000,
+      name = "catppuccin",
+    },
+    {
+      "nvim-telescope/telescope.nvim",
+      tag = "v0.2.1",
+      dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    {
+      "tpope/vim-fugitive",
+    },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      branch = "master",
+      lazy = false,
+      build = ":TSUpdate",
+      dependencies = { "nvim-treesitter/nvim-treesitter-context" },
+    },
+    {
+      "saghen/blink.cmp",
+      version = "1.*",
+      build = "cargo build --release",
+      dependencies = { "rafamadriz/friendly-snippets" },
+    },
+    {
+      "williamboman/mason.nvim",
+    },
+    {
+      "neovim/nvim-lspconfig",
+    },
+    {
+      "mfussenegger/nvim-lint",
+      event = { "BufReadPre", "BufNewFile" },
+    },
+    {
+      "mfussenegger/nvim-dap",
+    },
+    change_detection = { notify = false },
   })
 end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-  {
-    "catppuccin/nvim",
-    lazy = false,
-    priority = 1000,
-    name = "catppuccin",
-  },
-  {
-    "nvim-telescope/telescope.nvim",
-    tag = "v0.2.1",
-    dependencies = { "nvim-lua/plenary.nvim" },
-  },
-  {
-    "tpope/vim-fugitive",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    lazy = false,
-    build = ":TSUpdate",
-    dependencies = { "nvim-treesitter/nvim-treesitter-context" },
-  },
-  {
-    "saghen/blink.cmp",
-    version = "1.*",
-    build = "cargo build --release",
-    dependencies = { "rafamadriz/friendly-snippets" },
-  },
-  {
-    "williamboman/mason.nvim",
-  },
-  {
-    "neovim/nvim-lspconfig",
-  },
-  {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPre", "BufNewFile" },
-  },
-  {
-    "mfussenegger/nvim-dap",
-  },
-  change_detection = { notify = false },
-})
 
 require("catppuccin").setup({
   flavour = "auto",
