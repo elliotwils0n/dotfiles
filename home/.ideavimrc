@@ -1,0 +1,25 @@
+source ~/.vimrc
+
+set colorcolumn=100
+set noundofile
+
+nnoremap - :action ActivateProjectToolWindow<CR>
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>x :action HideAllWindows<CR>
+
+nnoremap gD :action GotoDeclaration<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gr :action FindUsages<CR>
+nnoremap K :action ShowHoverInfo<CR>
+
+nnoremap <leader>rn :action RenameElement<CR>
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+nnoremap <leader>f :action ReformatCode<CR>
+nnoremap <leader>h :action ToggleInlayHintsGloballyAction<CR>
+
+nnoremap ]d :action GotoNextError<CR>
+nnoremap [d :action GotoPreviousError<CR>
+
+nnoremap <leader>ff :action GotoFile<CR>
+nnoremap <leader>fs :action FindInPath<CR>
