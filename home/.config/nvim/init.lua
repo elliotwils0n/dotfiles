@@ -92,18 +92,19 @@ local version = vim.version()
 if version.major >= 0 and version.minor >= 12 and version.patch >= 0 then
   local gh = function(x) return "https://github.com/" .. x end
   vim.pack.add({
-    { src = gh("catppuccin/nvim"),                        name = "catppucin" },
-    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
-    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
-    { src = gh("tpope/vim-fugitive") },
+    { src = gh("neovim/nvim-lspconfig") },
     { src = gh("nvim-treesitter/nvim-treesitter"),        version = "master" },
     { src = gh("nvim-treesitter/nvim-treesitter-context") },
     { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
-    { src = gh("williamboman/mason.nvim") },
-    { src = gh("neovim/nvim-lspconfig") },
     { src = gh("mfussenegger/nvim-lint") },
+    { src = gh("williamboman/mason.nvim") },
+    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
+    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
+    { src = gh("tpope/vim-fugitive") },
+    { src = gh("catppuccin/nvim"),                        name = "catppucin" },
   })
+
   vim.api.nvim_create_autocmd("PackChanged", {
     callback = function(event)
       local name, kind = event.data.spec.name, event.data.kind
@@ -131,54 +132,19 @@ else
   vim.opt.rtp:prepend(lazypath)
 
   require("lazy").setup({
-    {
-      "catppuccin/nvim", lazy = false, priority = 1000, name = "catppuccin",
-    },
-    {
-      "nvim-telescope/telescope.nvim", tag = "v0.2.1", dependencies = { "nvim-lua/plenary.nvim" },
-    },
-    { "tpope/vim-fugitive", },
-    {
-      "nvim-treesitter/nvim-treesitter", branch = "master", lazy = false, build = ":TSUpdate",
-    },
-    { "nvim-treesitter/nvim-treesitter-context" },
-    {
-      "saghen/blink.cmp", version = "1.*", build = "cargo build --release",
-    },
-    { "rafamadriz/friendly-snippets" },
-    { "williamboman/mason.nvim" },
     { "neovim/nvim-lspconfig" },
-    {
-      "mfussenegger/nvim-lint", event = { "BufReadPre", "BufNewFile" },
-    },
+    { "nvim-treesitter/nvim-treesitter",        branch = "master",                      lazy = false,                               build = ":TSUpdate", },
+    { "nvim-treesitter/nvim-treesitter-context" },
+    { "saghen/blink.cmp",                       version = "1.*",                        build = "cargo build --release", },
+    { "rafamadriz/friendly-snippets" },
+    { "mfussenegger/nvim-lint",                 event = { "BufReadPre", "BufNewFile" }, },
+    { "williamboman/mason.nvim" },
+    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",                         dependencies = { "nvim-lua/plenary.nvim" }, },
+    { "tpope/vim-fugitive", },
+    { "catppuccin/nvim",                        lazy = false,                           priority = 1000,                            name = "catppuccin", },
     change_detection = { notify = false },
   })
 end
-
-require("catppuccin").setup({
-  flavour = "auto",
-  background = {
-    light = "latte",
-    dark = "mocha",
-  },
-  transparent_background = true,
-  float = {
-    transparent = true,
-  },
-})
-vim.cmd.colorscheme "catppuccin"
-
-require("telescope").setup()
-local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
-
--- fugitive
-vim.keymap.set("v", "<leader>sa", ":'<,'>diffget //2<CR>")
-vim.keymap.set("v", "<leader>sd", ":'<,'>diffget //3<CR>")
 
 require("nvim-treesitter.configs").setup({
   ensure_installed = {
@@ -193,13 +159,9 @@ require("nvim-treesitter.configs").setup({
 
 require("blink.cmp").setup({})
 
-require("mason").setup()
-
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-if pcall(require, "blink.cmp") then
-  lsp_capabilities = vim.tbl_deep_extend(
-    "force", lsp_capabilities, require("blink.cmp").get_lsp_capabilities())
-end
+lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities,
+  require('blink.cmp').get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
   "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls", "jdtls",
@@ -251,3 +213,30 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     require("lint").try_lint()
   end,
 })
+
+require("mason").setup()
+
+require("telescope").setup()
+local telescope_builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
+vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
+
+-- fugitive
+vim.keymap.set("v", "<leader>sa", ":'<,'>diffget //2<CR>")
+vim.keymap.set("v", "<leader>sd", ":'<,'>diffget //3<CR>")
+
+require("catppuccin").setup({
+  flavour = "auto",
+  background = {
+    light = "latte",
+    dark = "mocha",
+  },
+  transparent_background = true,
+  float = {
+    transparent = true,
+  },
+})
+vim.cmd.colorscheme "catppuccin"
