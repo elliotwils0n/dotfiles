@@ -11,10 +11,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
-vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
-vim.keymap.set("n", "<C-t>", "<CMD>vert term<CR>")
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
-
 vim.keymap.set({ "n", "i", "v" }, "<Up>", "<Nop>")
 vim.keymap.set({ "n", "i", "v" }, "<Down>", "<Nop>")
 vim.keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>")
@@ -159,6 +155,46 @@ require("nvim-treesitter.configs").setup({
 
 require("blink.cmp").setup({})
 
+require("lint").linters_by_ft = {
+  rust = { "clippy" },
+  go = { "golangcilint" },
+  python = { "pylint" },
+  typescript = { "eslint_d" },
+  javascript = { "eslint_d" },
+}
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+
+require("mason").setup()
+
+require("telescope").setup()
+local telescope_builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
+vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
+
+-- fugitive
+vim.keymap.set("v", "<leader>sa", ":'<,'>diffget //2<CR>")
+vim.keymap.set("v", "<leader>sd", ":'<,'>diffget //3<CR>")
+
+require("catppuccin").setup({
+  flavour = "auto",
+  background = {
+    light = "latte",
+    dark = "mocha",
+  },
+  transparent_background = true,
+  float = {
+    transparent = true,
+  },
+})
+vim.cmd.colorscheme "catppuccin"
+
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities,
   require('blink.cmp').get_lsp_capabilities({}, false))
@@ -200,43 +236,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, opts)
   end,
 })
-
-require("lint").linters_by_ft = {
-  rust = { "clippy" },
-  go = { "golangcilint" },
-  python = { "pylint" },
-  typescript = { "eslint_d" },
-  javascript = { "eslint_d" },
-}
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    require("lint").try_lint()
-  end,
-})
-
-require("mason").setup()
-
-require("telescope").setup()
-local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
-
--- fugitive
-vim.keymap.set("v", "<leader>sa", ":'<,'>diffget //2<CR>")
-vim.keymap.set("v", "<leader>sd", ":'<,'>diffget //3<CR>")
-
-require("catppuccin").setup({
-  flavour = "auto",
-  background = {
-    light = "latte",
-    dark = "mocha",
-  },
-  transparent_background = true,
-  float = {
-    transparent = true,
-  },
-})
-vim.cmd.colorscheme "catppuccin"

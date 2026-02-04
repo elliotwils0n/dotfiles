@@ -11,10 +11,6 @@ nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
 
-nnoremap - <CMD>Vex!<CR>
-nnoremap <C-t> <CMD>vert term<CR>
-tnoremap <Esc> <C-\><C-n>
-
 nnoremap <Up> <Nop>
 inoremap <Up> <Nop>
 vnoremap <Up> <Nop>
