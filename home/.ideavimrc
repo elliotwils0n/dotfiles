@@ -3,10 +3,6 @@ source ~/.vimrc
 set colorcolumn=100
 set noundofile
 
-nnoremap - :action ActivateProjectToolWindow<CR>
-nnoremap <C-t> :action ActivateTerminalToolWindow<CR>
-nnoremap <leader>x :action HideAllWindows<CR>
-
 nnoremap gD :action GotoDeclaration<CR>
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gi :action GotoImplementation<CR>
@@ -23,3 +19,5 @@ nnoremap [d :action GotoPreviousError<CR>
 
 nnoremap <leader>ff :action GotoFile<CR>
 nnoremap <leader>fs :action FindInPath<CR>
+
+nnoremap <leader>x :action HideAllWindows<CR>

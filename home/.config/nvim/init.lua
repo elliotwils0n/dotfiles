@@ -80,12 +80,9 @@ vim.api.nvim_create_autocmd("Filetype", {
   end
 })
 
--- Neovim exclusive
-vim.opt.winborder = "rounded"
-
 -- Plugins
 local version = vim.version()
-if version.major >= 0 and version.minor >= 12 and version.patch >= 0 then
+if version.major > 0 or version.minor >= 12 then
   local gh = function(x) return "https://github.com/" .. x end
   vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") },
@@ -178,10 +175,6 @@ vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
 vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
 
--- fugitive
-vim.keymap.set("v", "<leader>sa", ":'<,'>diffget //2<CR>")
-vim.keymap.set("v", "<leader>sd", ":'<,'>diffget //3<CR>")
-
 require("catppuccin").setup({
   flavour = "auto",
   background = {
@@ -195,6 +188,14 @@ require("catppuccin").setup({
 })
 vim.cmd.colorscheme "catppuccin"
 
+-- Other
+vim.opt.winborder = "rounded"
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = false,
+})
+
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities,
   require('blink.cmp').get_lsp_capabilities({}, false))
@@ -205,11 +206,6 @@ vim.lsp.enable({
 
 vim.lsp.config("*", {
   capabilities = lsp_capabilities,
-})
-
-vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = false,
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
