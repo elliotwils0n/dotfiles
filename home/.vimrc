@@ -24,6 +24,8 @@ nnoremap <Right> <Nop>
 inoremap <Right> <Nop>
 vnoremap <Right> <Nop>
 
+nnoremap - <CMD>Vex!<CR>
+
 set splitbelow
 set splitright
 

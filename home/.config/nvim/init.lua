@@ -16,6 +16,8 @@ vim.keymap.set({ "n", "i", "v" }, "<Down>", "<Nop>")
 vim.keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>")
 vim.keymap.set({ "n", "i", "v" }, "<Right>", "<Nop>")
 
+vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
+
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
