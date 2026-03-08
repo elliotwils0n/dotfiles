@@ -53,6 +53,7 @@ command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
 [[ -d "$HOME/.cargo/bin" ]] && PATH=$PATH:${HOME}/.cargo/bin
 
 [[ -d "/usr/local/go/bin" ]] && PATH=$PATH:/usr/local/go/bin
+[[ -d "$HOME/go/bin" ]] && PATH=$PATH:${HOME}/go/bin
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

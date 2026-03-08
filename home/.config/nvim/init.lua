@@ -92,11 +92,9 @@ if version.major > 0 or version.minor >= 12 then
     { src = gh("nvim-treesitter/nvim-treesitter-context") },
     { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
-    { src = gh("williamboman/mason.nvim") },
     { src = gh("mfussenegger/nvim-lint") },
     { src = gh("mfussenegger/nvim-dap") },
     { src = gh("tpope/vim-fugitive") },
-    { src = gh("catppuccin/nvim"),                        name = "catppucin" },
     { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
     { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
   })
@@ -133,11 +131,9 @@ else
     { "nvim-treesitter/nvim-treesitter-context" },
     { "saghen/blink.cmp",                       version = "1.*",                        build = "cargo build --release", },
     { "rafamadriz/friendly-snippets" },
-    { "williamboman/mason.nvim" },
     { "mfussenegger/nvim-lint",                 event = { "BufReadPre", "BufNewFile" }, },
     { "mfussenegger/nvim-dap" },
     { "tpope/vim-fugitive", },
-    { "catppuccin/nvim",                        lazy = false,                           priority = 1000,                            name = "catppuccin", },
     { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",                         dependencies = { "nvim-lua/plenary.nvim" }, },
     change_detection = { notify = false },
   })
@@ -147,7 +143,7 @@ require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site",
 })
 local treesitter_parsers = {
-  "c", "lua", "rust", "go", "python", "typescript", "javascript", "java",
+  "c", "lua", "rust", "go", "python", "typescript", "javascript",
 }
 require("nvim-treesitter").install(treesitter_parsers)
 for _, parser in ipairs(treesitter_parsers) do
@@ -162,33 +158,15 @@ end
 
 require("blink.cmp").setup({})
 
-require("mason").setup()
-
 require("lint").linters_by_ft = {
   rust = { "clippy" },
   go = { "golangcilint" },
-  python = { "pylint" },
-  typescript = { "eslint_d" },
-  javascript = { "eslint_d" },
 }
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   callback = function()
     require("lint").try_lint()
   end,
 })
-
-require("catppuccin").setup({
-  flavour = "auto",
-  background = {
-    light = "latte",
-    dark = "mocha",
-  },
-  transparent_background = true,
-  float = {
-    transparent = true,
-  },
-})
-vim.cmd.colorscheme "catppuccin"
 
 require("telescope").setup()
 local telescope_builtin = require("telescope.builtin")
@@ -212,7 +190,7 @@ lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
   require("blink.cmp").get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls", "jdtls",
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
 })
 
 vim.lsp.config("*", {
@@ -273,20 +251,45 @@ vim.keymap.set("n", "<leader>ds", function()
 end)
 
 -- DAP Rust
-dap.adapters.codelldb = {
+dap.adapters.gdb = {
   type = "executable",
-  command = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb",
+  command = "gdb",
+  args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
 }
 dap.configurations.c = {
   {
-    name = "Launch file",
-    type = "codelldb",
+    name = "Launch",
+    type = "gdb",
     request = "launch",
     program = function()
       return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
+    args = {}, -- provide arguments if needed
     cwd = "${workspaceFolder}",
-    stopOnEntry = false,
+    stopAtBeginningOfMainSubprogram = false,
+  },
+  {
+    name = "Select and attach to process",
+    type = "gdb",
+    request = "attach",
+    program = function()
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+    end,
+    pid = function()
+      local name = vim.fn.input("Executable name (filter): ")
+      return require("dap.utils").pick_process({ filter = name })
+    end,
+    cwd = "${workspaceFolder}",
+  },
+  {
+    name = "Attach to gdbserver :1234",
+    type = "gdb",
+    request = "attach",
+    target = "localhost:1234",
+    program = function()
+      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+    end,
+    cwd = "${workspaceFolder}",
   },
 }
 dap.configurations.rust = dap.configurations.c
@@ -304,7 +307,7 @@ dap.adapters.delve = function(callback, config)
       type = "server",
       port = "${port}",
       executable = {
-        command = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv",
+        command = "dlv",
         args = { "dap", "-l", "127.0.0.1:${port}", "--log", "--log-output=dap" },
         detached = vim.fn.has("win32") == 0,
       },
