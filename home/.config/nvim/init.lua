@@ -65,13 +65,13 @@ vim.api.nvim_create_autocmd("Filetype", {
   pattern = "rust",
   callback = function()
     vim.opt_local.colorcolumn = "100"
-  end
+  end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
   pattern = "go",
   callback = function()
     vim.opt_local.expandtab = false
-  end
+  end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
   pattern = "lua",
@@ -79,7 +79,7 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
     vim.opt_local.shiftwidth = 2
-  end
+  end,
 })
 
 -- Plugins
@@ -88,17 +88,17 @@ if version.major > 0 or version.minor >= 12 then
   local gh = function(x) return "https://github.com/" .. x end
   vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") },
-    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "master" },
+    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
     { src = gh("nvim-treesitter/nvim-treesitter-context") },
     { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
     { src = gh("williamboman/mason.nvim") },
     { src = gh("mfussenegger/nvim-lint") },
     { src = gh("mfussenegger/nvim-dap") },
-    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
-    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
     { src = gh("tpope/vim-fugitive") },
     { src = gh("catppuccin/nvim"),                        name = "catppucin" },
+    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
+    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
   })
 
   vim.api.nvim_create_autocmd("PackChanged", {
@@ -129,30 +129,36 @@ else
 
   require("lazy").setup({
     { "neovim/nvim-lspconfig" },
-    { "nvim-treesitter/nvim-treesitter",        branch = "master",                      lazy = false,                               build = ":TSUpdate", },
+    { "nvim-treesitter/nvim-treesitter",        branch = "main",                        lazy = false,                               build = ":TSUpdate", },
     { "nvim-treesitter/nvim-treesitter-context" },
     { "saghen/blink.cmp",                       version = "1.*",                        build = "cargo build --release", },
     { "rafamadriz/friendly-snippets" },
     { "williamboman/mason.nvim" },
     { "mfussenegger/nvim-lint",                 event = { "BufReadPre", "BufNewFile" }, },
     { "mfussenegger/nvim-dap" },
-    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",                         dependencies = { "nvim-lua/plenary.nvim" }, },
     { "tpope/vim-fugitive", },
     { "catppuccin/nvim",                        lazy = false,                           priority = 1000,                            name = "catppuccin", },
+    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",                         dependencies = { "nvim-lua/plenary.nvim" }, },
     change_detection = { notify = false },
   })
 end
 
-require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline",
-    "rust", "go", "python", "typescript", "javascript", "java",
-  },
-  sync_install = false,
-  auto_install = true,
-  highlight = { enable = true },
-  indent = { enable = true },
+require("nvim-treesitter").setup({
+  install_dir = vim.fn.stdpath("data") .. "/site",
 })
+local treesitter_parsers = {
+  "c", "lua", "rust", "go", "python", "typescript", "javascript", "java",
+}
+require("nvim-treesitter").install(treesitter_parsers)
+for _, parser in ipairs(treesitter_parsers) do
+  local parser_filetypes = vim.treesitter.language.get_filetypes(parser)
+  vim.api.nvim_create_autocmd("Filetype", {
+    pattern = parser_filetypes,
+    callback = function()
+      vim.treesitter.start()
+    end,
+  })
+end
 
 require("blink.cmp").setup({})
 
@@ -171,14 +177,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   end,
 })
 
-require("telescope").setup()
-local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
-
 require("catppuccin").setup({
   flavour = "auto",
   background = {
@@ -192,6 +190,14 @@ require("catppuccin").setup({
 })
 vim.cmd.colorscheme "catppuccin"
 
+require("telescope").setup()
+local telescope_builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
+vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
+
 -- Other
 vim.opt.winborder = "rounded"
 
@@ -202,8 +208,8 @@ vim.diagnostic.config({
 
 -- LSP
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-lsp_capabilities = vim.tbl_deep_extend('force', lsp_capabilities,
-  require('blink.cmp').get_lsp_capabilities({}, false))
+lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
+  require("blink.cmp").get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
   "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls", "jdtls",

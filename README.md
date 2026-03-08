@@ -37,7 +37,7 @@ stow -t $HOME -Dv home
 
 ## Shell tools
 ```
-bash-completion gnupg tmux stow ripgrep tree jq
+bash-completion gnupg tmux stow ripgrep tree jq tree-sitter-cli
 ```
 
 ## Remote servers
