@@ -143,7 +143,7 @@ require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site",
 })
 local treesitter_parsers = {
-  "c", "lua", "rust", "go", "python", "typescript", "javascript",
+  "c", "lua", "rust", "go", "python",
 }
 require("nvim-treesitter").install(treesitter_parsers)
 for _, parser in ipairs(treesitter_parsers) do
@@ -190,7 +190,7 @@ lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
   require("blink.cmp").get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
 })
 
 vim.lsp.config("*", {
