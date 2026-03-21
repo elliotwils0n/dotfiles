@@ -2,6 +2,8 @@ source ~/.vimrc
 
 nnoremap - :action ActivateProjectToolWindow<CR>
 
+nnoremap <leader>t :action ActivateTerminalToolWindow<CR>
+
 set colorcolumn=100
 set noundofile
 

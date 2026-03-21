@@ -26,6 +26,9 @@ vnoremap <Right> <Nop>
 
 nnoremap - <CMD>Vex!<CR>
 
+nnoremap <leader>t <CMD>vert term<CR>
+tnoremap <Esc> <C-\><C-n>
+
 set splitbelow
 set splitright
 

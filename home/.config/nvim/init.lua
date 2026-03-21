@@ -18,6 +18,9 @@ vim.keymap.set({ "n", "i", "v" }, "<Right>", "<Nop>")
 
 vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
 
+vim.keymap.set("n", "<leader>t", "<CMD>vert term<CR>")
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
@@ -161,7 +164,6 @@ require("blink.cmp").setup({})
 require("lint").linters_by_ft = {
   rust = { "clippy" },
   go = { "golangcilint" },
-  python = { "ruff" },
 }
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   callback = function()
@@ -265,7 +267,7 @@ dap.configurations.c = {
     program = function()
       return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
-    args = {}, -- provide arguments if needed
+    args = {},
     cwd = "${workspaceFolder}",
     stopAtBeginningOfMainSubprogram = false,
   },
@@ -354,7 +356,7 @@ dap.adapters.python = function(cb, config)
   else
     cb({
       type = "executable",
-      command = "/usr/bin/python",
+      command = vim.fn.expand("~/.virtualenvs/debugpy/bin/python"),
       args = { "-m", "debugpy.adapter" },
       options = {
         source_filetype = "python",
