@@ -95,7 +95,6 @@ if version.major > 0 or version.minor >= 12 then
     { src = gh("nvim-treesitter/nvim-treesitter-context") },
     { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
-    { src = gh("mfussenegger/nvim-lint") },
     { src = gh("mfussenegger/nvim-dap") },
     { src = gh("tpope/vim-fugitive") },
     { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
@@ -130,14 +129,13 @@ else
 
   require("lazy").setup({
     { "neovim/nvim-lspconfig" },
-    { "nvim-treesitter/nvim-treesitter",        branch = "main",                        lazy = false,                               build = ":TSUpdate", },
+    { "nvim-treesitter/nvim-treesitter",        branch = "main", lazy = false,                               build = ":TSUpdate", },
     { "nvim-treesitter/nvim-treesitter-context" },
-    { "saghen/blink.cmp",                       version = "1.*",                        build = "cargo build --release", },
+    { "saghen/blink.cmp",                       version = "1.*", build = "cargo build --release", },
     { "rafamadriz/friendly-snippets" },
-    { "mfussenegger/nvim-lint",                 event = { "BufReadPre", "BufNewFile" }, },
     { "mfussenegger/nvim-dap" },
     { "tpope/vim-fugitive", },
-    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",                         dependencies = { "nvim-lua/plenary.nvim" }, },
+    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",  dependencies = { "nvim-lua/plenary.nvim" }, },
     change_detection = { notify = false },
   })
 end
@@ -146,7 +144,7 @@ require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site",
 })
 local treesitter_parsers = {
-  "c", "lua", "rust", "go", "python",
+  "c", "lua", "rust", "go", "python", "javascript", "typescript",
 }
 require("nvim-treesitter").install(treesitter_parsers)
 for _, parser in ipairs(treesitter_parsers) do
@@ -161,15 +159,33 @@ end
 
 require("blink.cmp").setup({})
 
-require("lint").linters_by_ft = {
-  rust = { "clippy" },
-  go = { "golangcilint" },
-}
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    require("lint").try_lint()
-  end,
-})
+local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
+vim.keymap.set("n", "<F1>", dap.continue)
+vim.keymap.set("n", "<F2>", dap.step_into)
+vim.keymap.set("n", "<F3>", dap.step_over)
+vim.keymap.set("n", "<F4>", dap.step_out)
+vim.keymap.set("n", "<F5>", dap.step_back)
+vim.keymap.set("n", "<F13>", dap.restart)
+vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
+vim.keymap.set("n", "<leader>B", function()
+  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end)
+vim.keymap.set("n", "<leader>dr", function()
+  dap.repl.toggle()
+end)
+vim.keymap.set({ "n", "v" }, "<leader>dh", function()
+  dap_widgets.hover()
+end)
+vim.keymap.set({ "n", "v" }, "<leader>dp", function()
+  dap_widgets.preview()
+end)
+vim.keymap.set("n", "<leader>df", function()
+  dap_widgets.centered_float(dap_widgets.frames)
+end)
+vim.keymap.set("n", "<leader>ds", function()
+  dap_widgets.centered_float(dap_widgets.scopes)
+end)
+require("dap-configurations").setup()
 
 require("telescope").setup()
 local telescope_builtin = require("telescope.builtin")
@@ -193,7 +209,7 @@ lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
   require("blink.cmp").get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
 })
 
 vim.lsp.config("*", {
@@ -224,161 +240,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, opts)
   end,
 })
-
--- DAP
-local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
-vim.keymap.set("n", "<F1>", dap.continue)
-vim.keymap.set("n", "<F2>", dap.step_into)
-vim.keymap.set("n", "<F3>", dap.step_over)
-vim.keymap.set("n", "<F4>", dap.step_out)
-vim.keymap.set("n", "<F5>", dap.step_back)
-vim.keymap.set("n", "<F13>", dap.restart)
-vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
-vim.keymap.set("n", "<leader>B", function()
-  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end)
-vim.keymap.set("n", "<leader>dr", function()
-  dap.repl.toggle()
-end)
-vim.keymap.set({ "n", "v" }, "<leader>dh", function()
-  dap_widgets.hover()
-end)
-vim.keymap.set({ "n", "v" }, "<leader>dp", function()
-  dap_widgets.preview()
-end)
-vim.keymap.set("n", "<leader>df", function()
-  dap_widgets.centered_float(dap_widgets.frames)
-end)
-vim.keymap.set("n", "<leader>ds", function()
-  dap_widgets.centered_float(dap_widgets.scopes)
-end)
-
--- DAP Rust
-dap.adapters.gdb = {
-  type = "executable",
-  command = "gdb",
-  args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
-}
-dap.configurations.c = {
-  {
-    name = "Launch",
-    type = "gdb",
-    request = "launch",
-    program = function()
-      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-    end,
-    args = {},
-    cwd = "${workspaceFolder}",
-    stopAtBeginningOfMainSubprogram = false,
-  },
-  {
-    name = "Select and attach to process",
-    type = "gdb",
-    request = "attach",
-    program = function()
-      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-    end,
-    pid = function()
-      local name = vim.fn.input("Executable name (filter): ")
-      return require("dap.utils").pick_process({ filter = name })
-    end,
-    cwd = "${workspaceFolder}",
-  },
-  {
-    name = "Attach to gdbserver :1234",
-    type = "gdb",
-    request = "attach",
-    target = "localhost:1234",
-    program = function()
-      return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-    end,
-    cwd = "${workspaceFolder}",
-  },
-}
-dap.configurations.rust = dap.configurations.c
-
--- DAP Golang
-dap.adapters.delve = function(callback, config)
-  if config.mode == "remote" and config.request == "attach" then
-    callback({
-      type = "server",
-      host = config.host or "127.0.0.1",
-      port = config.port or "38697",
-    })
-  else
-    callback({
-      type = "server",
-      port = "${port}",
-      executable = {
-        command = "dlv",
-        args = { "dap", "-l", "127.0.0.1:${port}", "--log", "--log-output=dap" },
-        detached = vim.fn.has("win32") == 0,
-      },
-    })
-  end
-end
-dap.configurations.go = {
-  {
-    type = "delve",
-    name = "Debug",
-    request = "launch",
-    program = "${file}",
-  },
-  {
-    type = "delve",
-    name = "Debug test",
-    request = "launch",
-    mode = "test",
-    program = "${file}",
-  },
-  {
-    type = "delve",
-    name = "Debug test (go.mod)",
-    request = "launch",
-    mode = "test",
-    program = "./${relativeFileDirname}",
-  },
-}
-
--- DAP Python
-dap.adapters.python = function(cb, config)
-  if config.request == "attach" then
-    local port = (config.connect or config).port
-    local host = (config.connect or config).host or "127.0.0.1"
-    cb({
-      type = "server",
-      port = assert(port, "`connect.port` is required for a python `attach` configuration"),
-      host = host,
-      options = {
-        source_filetype = "python",
-      },
-    })
-  else
-    cb({
-      type = "executable",
-      command = vim.fn.expand("~/.virtualenvs/debugpy/bin/python"),
-      args = { "-m", "debugpy.adapter" },
-      options = {
-        source_filetype = "python",
-      },
-    })
-  end
-end
-dap.configurations.python = {
-  {
-    type = "python",
-    request = "launch",
-    name = "Launch file",
-    program = "${file}",
-    pythonPath = function()
-      local cwd = vim.fn.getcwd()
-      if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
-        return cwd .. "/venv/bin/python"
-      elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
-        return cwd .. "/.venv/bin/python"
-      else
-        return "/usr/bin/python"
-      end
-    end,
-  },
-}
