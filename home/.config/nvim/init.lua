@@ -55,6 +55,8 @@ vim.opt.foldlevel = 99
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
 
+vim.opt.completeopt:append("noselect")
+
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("state") .. "/undo//"
 
@@ -96,6 +98,7 @@ if version.major > 0 or version.minor >= 12 then
     { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
     { src = gh("mfussenegger/nvim-dap") },
+    { src = gh("elliotwils0n/nvim-dapconfig"), },
     { src = gh("tpope/vim-fugitive") },
     { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
     { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
@@ -134,6 +137,7 @@ else
     { "saghen/blink.cmp",                       version = "1.*", build = "cargo build --release", },
     { "rafamadriz/friendly-snippets" },
     { "mfussenegger/nvim-dap" },
+    { "elliotwils0n/nvim-dapconfig" },
     { "tpope/vim-fugitive", },
     { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",  dependencies = { "nvim-lua/plenary.nvim" }, },
     change_detection = { notify = false },
@@ -144,7 +148,9 @@ require("nvim-treesitter").setup({
   install_dir = vim.fn.stdpath("data") .. "/site",
 })
 local treesitter_parsers = {
-  "c", "lua", "rust", "go", "python", "javascript", "typescript",
+  "markdown", "toml", "yaml", "json",
+  "c", "lua", "rust", "go", "java",
+  "python", "javascript", "typescript",
 }
 require("nvim-treesitter").install(treesitter_parsers)
 for _, parser in ipairs(treesitter_parsers) do
@@ -185,7 +191,7 @@ end)
 vim.keymap.set("n", "<leader>ds", function()
   dap_widgets.centered_float(dap_widgets.scopes)
 end)
-require("dap-configurations").setup()
+require("dapconfig").setup()
 
 require("telescope").setup()
 local telescope_builtin = require("telescope.builtin")

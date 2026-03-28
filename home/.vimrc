@@ -63,6 +63,8 @@ set foldlevel=99
 set wildmenu
 set wildmode=list:longest
 
+set completeopt+=noselect
+
 set undofile
 set undodir=~/.vim/undo//
 
