@@ -87,7 +87,68 @@ vim.api.nvim_create_autocmd("Filetype", {
   end,
 })
 
--- Plugins
+-- treesitter
+local treesitter_parsers = {
+  "markdown", "toml", "yaml", "json",
+  "c", "lua", "rust", "go", "java",
+  "python", "javascript", "typescript",
+}
+
+for _, parser in ipairs(treesitter_parsers) do
+  local filetypes = vim.treesitter.language.get_filetypes(parser)
+  vim.api.nvim_create_autocmd("Filetype", {
+    pattern = filetypes,
+    callback = function()
+      vim.treesitter.start()
+    end,
+  })
+end
+
+-- lsp
+local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
+
+vim.lsp.enable({
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
+})
+
+vim.lsp.config("*", {
+  capabilities = lsp_capabilities,
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local opts = { buffer = args.buf }
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>f", function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+    vim.keymap.set("n", "<leader>h", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, opts)
+    vim.keymap.set("n", "[d", function()
+      vim.diagnostic.goto_next()
+    end, opts)
+    vim.keymap.set("n", "]d", function()
+      vim.diagnostic.goto_prev()
+    end, opts)
+  end,
+})
+
+-- other
+vim.opt.winborder = "rounded"
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = false,
+})
+
+-- plugins
 local version = vim.version()
 if version.major > 0 or version.minor >= 12 then
   local gh = function(x) return "https://github.com/" .. x end
@@ -144,26 +205,15 @@ else
   })
 end
 
-require("nvim-treesitter").setup({
-  install_dir = vim.fn.stdpath("data") .. "/site",
-})
-local treesitter_parsers = {
-  "markdown", "toml", "yaml", "json",
-  "c", "lua", "rust", "go", "java",
-  "python", "javascript", "typescript",
-}
+require("nvim-treesitter").setup({})
 require("nvim-treesitter").install(treesitter_parsers)
-for _, parser in ipairs(treesitter_parsers) do
-  local parser_filetypes = vim.treesitter.language.get_filetypes(parser)
-  vim.api.nvim_create_autocmd("Filetype", {
-    pattern = parser_filetypes,
-    callback = function()
-      vim.treesitter.start()
-    end,
-  })
-end
 
 require("blink.cmp").setup({})
+lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
+  require("blink.cmp").get_lsp_capabilities({}, false))
+vim.lsp.config("*", {
+  capabilities = lsp_capabilities,
+})
 
 local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
 vim.keymap.set("n", "<F1>", dap.continue)
@@ -200,49 +250,3 @@ vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
 vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
 vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
-
--- Other
-vim.opt.winborder = "rounded"
-
-vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = false,
-})
-
--- LSP
-local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
-  require("blink.cmp").get_lsp_capabilities({}, false))
-
-vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
-})
-
-vim.lsp.config("*", {
-  capabilities = lsp_capabilities,
-})
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    local opts = { buffer = args.buf }
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-    vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "<leader>f", function()
-      vim.lsp.buf.format { async = true }
-    end, opts)
-    vim.keymap.set("n", "<leader>h", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end, opts)
-    vim.keymap.set("n", "[d", function()
-      vim.diagnostic.goto_next()
-    end, opts)
-    vim.keymap.set("n", "]d", function()
-      vim.diagnostic.goto_prev()
-    end, opts)
-  end,
-})
