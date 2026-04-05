@@ -87,132 +87,24 @@ vim.api.nvim_create_autocmd("Filetype", {
   end,
 })
 
--- Plugins
-local version = vim.version()
-if version.major > 0 or version.minor >= 12 then
-  local gh = function(x) return "https://github.com/" .. x end
-  vim.pack.add({
-    { src = gh("neovim/nvim-lspconfig") },
-    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
-    { src = gh("nvim-treesitter/nvim-treesitter-context") },
-    { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
-    { src = gh("rafamadriz/friendly-snippets") },
-    { src = gh("mfussenegger/nvim-dap") },
-    { src = gh("elliotwils0n/nvim-dapconfig"), },
-    { src = gh("tpope/vim-fugitive") },
-    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
-    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
-  })
-
-  vim.api.nvim_create_autocmd("PackChanged", {
-    callback = function(event)
-      local name, kind = event.data.spec.name, event.data.kind
-      local updated = kind == "install" or kind == "update"
-      if updated and name == "nvim-treesitter" then
-        vim.cmd("TSUpdate")
-      end
-      if updated and name == "blink.cmp" then
-        vim.system({ "cargo build --release" }, { cwd = event.data.path })
-      end
-    end
-  })
-else
-  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-  if not (vim.uv or vim.loop).fs_stat(lazypath) then
-    vim.fn.system({
-      "git",
-      "clone",
-      "--filter=blob:none",
-      "https://github.com/folke/lazy.nvim.git",
-      "--branch=stable",
-      lazypath,
-    })
-  end
-  vim.opt.rtp:prepend(lazypath)
-
-  require("lazy").setup({
-    { "neovim/nvim-lspconfig" },
-    { "nvim-treesitter/nvim-treesitter",        branch = "main", lazy = false,                               build = ":TSUpdate", },
-    { "nvim-treesitter/nvim-treesitter-context" },
-    { "saghen/blink.cmp",                       version = "1.*", build = "cargo build --release", },
-    { "rafamadriz/friendly-snippets" },
-    { "mfussenegger/nvim-dap" },
-    { "elliotwils0n/nvim-dapconfig" },
-    { "tpope/vim-fugitive", },
-    { "nvim-telescope/telescope.nvim",          tag = "v0.2.1",  dependencies = { "nvim-lua/plenary.nvim" }, },
-    change_detection = { notify = false },
-  })
-end
-
-require("nvim-treesitter").setup({
-  install_dir = vim.fn.stdpath("data") .. "/site",
-})
+-- treesitter
 local treesitter_parsers = {
   "markdown", "toml", "yaml", "json",
-  "c", "lua", "rust", "go", "java",
-  "python", "javascript", "typescript",
+  "c", "lua", "rust", "go", "python", "javascript", "typescript",
 }
-require("nvim-treesitter").install(treesitter_parsers)
+
 for _, parser in ipairs(treesitter_parsers) do
-  local parser_filetypes = vim.treesitter.language.get_filetypes(parser)
+  local filetypes = vim.treesitter.language.get_filetypes(parser)
   vim.api.nvim_create_autocmd("Filetype", {
-    pattern = parser_filetypes,
+    pattern = filetypes,
     callback = function()
       vim.treesitter.start()
     end,
   })
 end
 
-require("blink.cmp").setup({})
-
-local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
-vim.keymap.set("n", "<F1>", dap.continue)
-vim.keymap.set("n", "<F2>", dap.step_into)
-vim.keymap.set("n", "<F3>", dap.step_over)
-vim.keymap.set("n", "<F4>", dap.step_out)
-vim.keymap.set("n", "<F5>", dap.step_back)
-vim.keymap.set("n", "<F13>", dap.restart)
-vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
-vim.keymap.set("n", "<leader>B", function()
-  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end)
-vim.keymap.set("n", "<leader>dr", function()
-  dap.repl.toggle()
-end)
-vim.keymap.set({ "n", "v" }, "<leader>dh", function()
-  dap_widgets.hover()
-end)
-vim.keymap.set({ "n", "v" }, "<leader>dp", function()
-  dap_widgets.preview()
-end)
-vim.keymap.set("n", "<leader>df", function()
-  dap_widgets.centered_float(dap_widgets.frames)
-end)
-vim.keymap.set("n", "<leader>ds", function()
-  dap_widgets.centered_float(dap_widgets.scopes)
-end)
-require("dapconfig").setup()
-
-require("telescope").setup()
-local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
-
--- Other
-vim.opt.winborder = "rounded"
-
-vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = false,
-})
-
--- LSP
+-- lsp
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
-  require("blink.cmp").get_lsp_capabilities({}, false))
 
 vim.lsp.enable({
   "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
@@ -246,3 +138,86 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, opts)
   end,
 })
+
+-- other
+vim.opt.winborder = "rounded"
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = false,
+})
+
+-- plugins
+local gh = function(x) return "https://github.com/" .. x end
+vim.pack.add({
+  { src = gh("neovim/nvim-lspconfig") },
+  { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
+  { src = gh("nvim-treesitter/nvim-treesitter-context") },
+  { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
+  { src = gh("rafamadriz/friendly-snippets") },
+  { src = gh("mfussenegger/nvim-dap") },
+  { src = gh("elliotwils0n/nvim-dapconfig"), },
+  { src = gh("tpope/vim-fugitive") },
+  { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
+  { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
+})
+
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(event)
+    local name, kind = event.data.spec.name, event.data.kind
+    local updated = kind == "install" or kind == "update"
+    if updated and name == "nvim-treesitter" then
+      vim.cmd("TSUpdate")
+    end
+    if updated and name == "blink.cmp" then
+      vim.system({ "cargo build --release" }, { cwd = event.data.path })
+    end
+  end
+})
+
+require("nvim-treesitter").setup({})
+require("nvim-treesitter").install(treesitter_parsers)
+
+require("blink.cmp").setup({})
+lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
+  require("blink.cmp").get_lsp_capabilities({}, false))
+vim.lsp.config("*", {
+  capabilities = lsp_capabilities,
+})
+
+local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
+vim.keymap.set("n", "<F1>", dap.continue)
+vim.keymap.set("n", "<F2>", dap.step_into)
+vim.keymap.set("n", "<F3>", dap.step_over)
+vim.keymap.set("n", "<F4>", dap.step_out)
+vim.keymap.set("n", "<F5>", dap.step_back)
+vim.keymap.set("n", "<F13>", dap.restart)
+vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint)
+vim.keymap.set("n", "<leader>B", function()
+  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end)
+vim.keymap.set("n", "<leader>dr", function()
+  dap.repl.toggle()
+end)
+vim.keymap.set({ "n", "v" }, "<leader>dh", function()
+  dap_widgets.hover()
+end)
+vim.keymap.set({ "n", "v" }, "<leader>dp", function()
+  dap_widgets.preview()
+end)
+vim.keymap.set("n", "<leader>df", function()
+  dap_widgets.centered_float(dap_widgets.frames)
+end)
+vim.keymap.set("n", "<leader>ds", function()
+  dap_widgets.centered_float(dap_widgets.scopes)
+end)
+
+require("dapconfig").setup()
+
+require("telescope").setup()
+local telescope_builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
+vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
+vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
+vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
