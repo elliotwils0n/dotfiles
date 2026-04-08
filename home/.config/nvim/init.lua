@@ -66,19 +66,19 @@ vim.filetype.add {
   },
 }
 
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   pattern = "rust",
   callback = function()
     vim.opt_local.colorcolumn = "100"
   end,
 })
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   pattern = "go",
   callback = function()
     vim.opt_local.expandtab = false
   end,
 })
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   pattern = "lua",
   callback = function()
     vim.opt_local.tabstop = 2
@@ -88,20 +88,17 @@ vim.api.nvim_create_autocmd("Filetype", {
 })
 
 -- treesitter
-local treesitter_parsers = {
-  "markdown", "toml", "yaml", "json",
-  "c", "lua", "rust", "go", "python", "javascript", "typescript",
-}
+local treesitter_group = vim.api.nvim_create_augroup("treesitter-start", { clear = true })
 
-for _, parser in ipairs(treesitter_parsers) do
-  local filetypes = vim.treesitter.language.get_filetypes(parser)
-  vim.api.nvim_create_autocmd("Filetype", {
-    pattern = filetypes,
-    callback = function()
-      vim.treesitter.start()
-    end,
-  })
-end
+vim.api.nvim_create_autocmd("FileType", {
+  group = treesitter_group,
+  callback = function(args)
+    local ok, parser = pcall(vim.treesitter.get_parser, args.buf)
+    if ok and parser then
+      pcall(vim.treesitter.start)
+    end
+  end,
+})
 
 -- lsp
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -176,7 +173,9 @@ vim.api.nvim_create_autocmd("PackChanged", {
 })
 
 require("nvim-treesitter").setup({})
-require("nvim-treesitter").install(treesitter_parsers)
+require("nvim-treesitter").install({
+  "c", "lua", "rust", "go", "python", "javascript", "typescript",
+})
 
 require("blink.cmp").setup({})
 lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
