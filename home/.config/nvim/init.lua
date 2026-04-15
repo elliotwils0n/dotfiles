@@ -104,7 +104,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls",
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
 })
 
 vim.lsp.config("*", {
@@ -174,7 +174,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
 require("nvim-treesitter").setup({})
 require("nvim-treesitter").install({
-  "c", "lua", "rust", "go", "python", "javascript", "typescript",
+  "c", "lua", "rust", "go", "python",
 })
 
 require("blink.cmp").setup({})
