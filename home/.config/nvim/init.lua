@@ -104,7 +104,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
 
 vim.lsp.enable({
-  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
+  "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls", "jdtls",
 })
 
 vim.lsp.config("*", {
