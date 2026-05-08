@@ -1,5 +1,3 @@
-syntax enable
-
 let g:mapleader = " "
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
@@ -25,7 +23,6 @@ inoremap <Right> <Nop>
 vnoremap <Right> <Nop>
 
 nnoremap - <CMD>Vex!<CR>
-
 nnoremap <leader>t <CMD>vert term<CR>
 tnoremap <Esc> <C-\><C-n>
 
@@ -39,13 +36,13 @@ set expandtab
 
 set autoindent
 set nowrap
-set scrolloff=10
-set sidescrolloff=10
+set scrolloff=8
+set sidescrolloff=8
 
-set smartcase
 set ignorecase
-set nohlsearch
+set smartcase
 set incsearch
+set nohlsearch
 
 set background=dark
 set number
@@ -66,10 +63,9 @@ set wildmode=list:longest
 set completeopt+=noselect
 
 set undofile
-set undodir=~/.vim/undo//
+set undodir=~/.vim/undo
 
 autocmd BufRead,BufNewFile *.h set filetype=c
 
 autocmd FileType rust setlocal colorcolumn=100
 autocmd FileType go   setlocal noexpandtab
-autocmd FileType lua  setlocal tabstop=2 softtabstop=2 shiftwidth=2

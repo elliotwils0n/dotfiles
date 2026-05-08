@@ -57,11 +57,11 @@ __prepend_to_path() {
     fi
 }
 
-__prepend_to_path "$HOME/.cargo/bin"
-__prepend_to_path "$HOME/go/bin"
-
 __prepend_to_path "/usr/local/go/bin"
 __prepend_to_path "$HOME/opt/jdtls/bin"
+
+__prepend_to_path "$HOME/go/bin"
+__prepend_to_path "$HOME/.cargo/bin"
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
