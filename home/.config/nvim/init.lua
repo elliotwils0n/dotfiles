@@ -9,11 +9,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
-vim.keymap.set({ "n", "i", "v" }, "<Up>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<Down>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>")
-vim.keymap.set({ "n", "i", "v" }, "<Right>", "<Nop>")
-
 vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
 vim.keymap.set("n", "<leader>t", "<CMD>vert term<CR>")
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
@@ -54,14 +49,15 @@ vim.opt.wildmode = "list:longest"
 
 vim.opt.completeopt:append("noselect")
 
+vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo")
 
-vim.filetype.add {
+vim.filetype.add({
     extension = {
         h = "c",
     },
-}
+})
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "rust",
@@ -89,10 +85,8 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- lsp
 vim.lsp.enable({
-    "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright", "ts_ls", "jdtls",
-})
-vim.lsp.config("*", {
-    capabilities = vim.lsp.protocol.make_client_capabilities()
+    "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
+    "ts_ls", "jdtls",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {

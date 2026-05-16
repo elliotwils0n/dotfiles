@@ -9,19 +9,6 @@ nnoremap <C-u> <C-u>zz
 nnoremap n nzz
 nnoremap N Nzz
 
-nnoremap <Up> <Nop>
-inoremap <Up> <Nop>
-vnoremap <Up> <Nop>
-nnoremap <Down> <Nop>
-inoremap <Down> <Nop>
-vnoremap <Down> <Nop>
-nnoremap <Left> <Nop>
-inoremap <Left> <Nop>
-vnoremap <Left> <Nop>
-nnoremap <Right> <Nop>
-inoremap <Right> <Nop>
-vnoremap <Right> <Nop>
-
 nnoremap - <CMD>Vex!<CR>
 nnoremap <leader>t <CMD>vert term<CR>
 tnoremap <Esc> <C-\><C-n>
@@ -62,6 +49,7 @@ set wildmode=list:longest
 
 set completeopt+=noselect
 
+set noswapfile
 set undofile
 set undodir=~/.vim/undo
 
