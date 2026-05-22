@@ -15,15 +15,14 @@ stow -t $HOME -Dv home
 > [!NOTE]
 > For arch linux use pacman:
 > ```shell
-> pacman -S docker neovim rustup go nvm
+> pacman -S docker neovim rustup go
 > ```
 
 | Utilities                 | Programming       |
 |---------------------------|-------------------|
 | [Docker Engine][docker]   | [Rust][rust]      |
 | [Neovim][neovim]          | [Go][go]          |
-| [IntelliJ Idea][intellij] | [nvm][nvm]        |
-|                           | [SDKMAN!][sdkman] |
+| [IntelliJ Idea][intellij] | [SDKMAN!][sdkman] |
 
 <!-- Utilities -->
 [docker]: https://docs.docker.com/engine/install
@@ -32,7 +31,6 @@ stow -t $HOME -Dv home
 <!-- Programming -->
 [rust]: https://www.rust-lang.org/tools/install
 [go]: https://go.dev/doc/install
-[nvm]: https://github.com/nvm-sh/nvm#installing-and-updating
 [sdkman]: https://sdkman.io/install
 
 ## Shell tools

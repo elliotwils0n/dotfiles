@@ -86,7 +86,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- lsp
 vim.lsp.enable({
     "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
-    "ts_ls", "jdtls",
+    "jdtls",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -126,15 +126,14 @@ vim.diagnostic.config({
 local gh = function(x) return "https://github.com/" .. x end
 vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") },
-    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
-    { src = gh("nvim-treesitter/nvim-treesitter-context") },
-    { src = gh("saghen/blink.cmp"),                       version = vim.version.range("1.*") },
+    { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
+    { src = gh("saghen/blink.cmp"),                version = vim.version.range("1.*") },
     { src = gh("rafamadriz/friendly-snippets") },
     { src = gh("mfussenegger/nvim-dap") },
     { src = gh("elliotwils0n/nvim-dapconfig"), },
     { src = gh("tpope/vim-fugitive") },
     { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
-    { src = gh("nvim-telescope/telescope.nvim"),          version = vim.version.range("0.2.*") },
+    { src = gh("nvim-telescope/telescope.nvim"),   version = vim.version.range("0.2.*") },
 })
 
 vim.api.nvim_create_autocmd("PackChanged", {
