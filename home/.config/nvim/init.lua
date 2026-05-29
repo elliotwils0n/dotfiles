@@ -85,8 +85,9 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- lsp
 vim.lsp.enable({
-    "clangd", "lua_ls", "rust_analyzer", "gopls", "pyright",
-    "jdtls",
+    "clangd", "rust_analyzer", "zls",
+    "gopls", "jdtls",
+    "lua_ls", "pyright",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
