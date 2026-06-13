@@ -50,7 +50,9 @@ set foldlevel=99
 set wildmenu
 set wildmode=list:longest
 
-set completeopt+=noselect
+set autocomplete
+set completeopt=menuone,noselect
+set complete+=o
 
 set noswapfile
 set undofile

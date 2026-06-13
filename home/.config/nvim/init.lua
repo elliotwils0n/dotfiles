@@ -49,7 +49,9 @@ vim.opt.foldlevel = 99
 vim.opt.wildmenu = true
 vim.opt.wildmode = "list:longest"
 
-vim.opt.completeopt:append("noselect")
+vim.opt.autocomplete = true
+vim.opt.completeopt = { "menuone", "noselect" }
+vim.opt.complete:append("o")
 
 vim.opt.swapfile = false
 vim.opt.undofile = true
@@ -117,6 +119,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    callback = function(ev)
+        local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+        -- Enable auto-completion.
+        if client:supports_method('textDocument/completion') then
+            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        end
+        -- Auto-format ("lint") on save.
+        if not client:supports_method('textDocument/willSaveWaitUntil')
+            and client:supports_method('textDocument/formatting') then
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+                buffer = ev.buf,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = ev.buf, id = client.id, timeout_ms = 1000 })
+                end,
+            })
+        end
+    end,
+})
+
 -- other
 vim.opt.winborder = "rounded"
 
@@ -130,8 +154,6 @@ local gh = function(x) return "https://github.com/" .. x end
 vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") },
     { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
-    { src = gh("saghen/blink.cmp"),                version = vim.version.range("1.*") },
-    { src = gh("rafamadriz/friendly-snippets") },
     { src = gh("mfussenegger/nvim-dap") },
     { src = gh("elliotwils0n/nvim-dapconfig"), },
     { src = gh("tpope/vim-fugitive") },
@@ -146,17 +168,8 @@ vim.api.nvim_create_autocmd("PackChanged", {
         if updated and name == "nvim-treesitter" then
             vim.cmd("TSUpdate")
         end
-        if updated and name == "blink.cmp" then
-            vim.system({ "cargo build --release" }, { cwd = event.data.path })
-        end
     end,
 })
-
-require("blink.cmp").setup({})
-local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-lsp_capabilities = vim.tbl_deep_extend("force", lsp_capabilities,
-    require("blink.cmp").get_lsp_capabilities({}, false))
-vim.lsp.config("*", { capabilities = lsp_capabilities })
 
 local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
 vim.keymap.set("n", "<F1>", dap.continue)
