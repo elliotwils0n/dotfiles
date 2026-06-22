@@ -50,6 +50,8 @@ fi
 
 command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
 
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+
 __prepend_to_path() {
     local dir="$1"
     if [[ -d "$dir" ]]; then

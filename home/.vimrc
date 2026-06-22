@@ -58,6 +58,8 @@ set noswapfile
 set undofile
 set undodir=~/.vim/undo
 
+highlight Normal guibg=NONE ctermbg=NONE
+
 autocmd BufRead,BufNewFile *.h set filetype=c
 
 autocmd FileType rust setlocal colorcolumn=100

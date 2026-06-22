@@ -57,6 +57,8 @@ vim.opt.swapfile = false
 vim.opt.undofile = true
 vim.opt.undodir = vim.fs.joinpath(vim.fn.stdpath("state"), "undo")
 
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+
 vim.filetype.add({
     extension = {
         h = "c",
