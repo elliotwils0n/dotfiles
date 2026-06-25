@@ -156,11 +156,10 @@ local gh = function(x) return "https://github.com/" .. x end
 vim.pack.add({
     { src = gh("neovim/nvim-lspconfig") },
     { src = gh("nvim-treesitter/nvim-treesitter"), version = "main" },
+    { src = gh("junegunn/fzf.vim") },
+    { src = gh("tpope/vim-fugitive") },
     { src = gh("mfussenegger/nvim-dap") },
     { src = gh("elliotwils0n/nvim-dapconfig"), },
-    { src = gh("tpope/vim-fugitive") },
-    { src = gh("nvim-lua/plenary.nvim") }, -- for telescope
-    { src = gh("nvim-telescope/telescope.nvim"),   version = vim.version.range("0.2.*") },
 })
 
 vim.api.nvim_create_autocmd("PackChanged", {
@@ -172,6 +171,11 @@ vim.api.nvim_create_autocmd("PackChanged", {
         end
     end,
 })
+
+vim.keymap.set("n", "<leader>ff", "<CMD>Files<CR>")
+vim.keymap.set("n", "<leader>fg", "<CMD>GitFiles<CR>")
+vim.keymap.set("n", "<leader>fs", "<CMD>Rg<CR>")
+vim.keymap.set("n", "<leader>fb", "<CMD>Buffers<CR>")
 
 local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
 vim.keymap.set("n", "<F1>", dap.continue)
@@ -201,11 +205,3 @@ vim.keymap.set("n", "<leader>ds", function()
 end)
 
 require("dapconfig").setup()
-
-require("telescope").setup()
-local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", telescope_builtin.git_files, {})
-vim.keymap.set("n", "<leader>fs", telescope_builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", telescope_builtin.buffers, {})
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, {})
