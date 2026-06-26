@@ -21,7 +21,12 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias tree='tree -C'
 
-[[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
+__prepend_to_path() {
+    local dir="$1"
+    if [[ -d "$dir" ]]; then
+	    echo "$PATH" | grep -q "$dir" || PATH="${dir}:${PATH}"
+    fi
+}
 
 __get_prompt() {
     local prompt_status='$( [ $? -eq 0 ] && echo "\[\e[1;32m\]>\[\e[0m\]" || echo "\[\e[1;31m\]>\[\e[0m\]" )'
@@ -33,6 +38,8 @@ __get_prompt() {
         echo "$prompt_status $prompt_dir"
     fi
 }
+
+[[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
 
 if type __git_ps1 >/dev/null 2>&1; then
     export GIT_PS1_SHOWDIRTYSTATE=1
@@ -52,16 +59,8 @@ command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
 
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 
-__prepend_to_path() {
-    local dir="$1"
-    if [[ -d "$dir" ]]; then
-	    echo "$PATH" | grep -q "$dir" || PATH="${dir}:${PATH}"
-    fi
-}
-
 __prepend_to_path "/usr/local/go/bin"
 __prepend_to_path "$HOME/opt/jdtls/bin"
-
 __prepend_to_path "$HOME/go/bin"
 __prepend_to_path "$HOME/.cargo/bin"
 
