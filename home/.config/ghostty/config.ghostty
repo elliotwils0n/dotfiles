@@ -1,6 +1,9 @@
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 background-opacity = 0.95
 
+window-width = 75
+window-height = 30
+
 font-family = FiraCode Nerd Font Mono
 font-size = 14
 font-feature = -calt, -liga, -dlig

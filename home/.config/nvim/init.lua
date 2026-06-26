@@ -121,19 +121,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('my.lsp', {}),
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("my.lsp", {}),
     callback = function(ev)
         local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
         -- Enable auto-completion.
-        if client:supports_method('textDocument/completion') then
+        if client:supports_method("textDocument/completion") then
             vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
         end
         -- Auto-format ("lint") on save.
-        if not client:supports_method('textDocument/willSaveWaitUntil')
-            and client:supports_method('textDocument/formatting') then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-                group = vim.api.nvim_create_augroup('my.lsp', { clear = false }),
+        if not client:supports_method("textDocument/willSaveWaitUntil")
+            and client:supports_method("textDocument/formatting") then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+                group = vim.api.nvim_create_augroup("my.lsp", { clear = false }),
                 buffer = ev.buf,
                 callback = function()
                     vim.lsp.buf.format({ bufnr = ev.buf, id = client.id, timeout_ms = 1000 })
@@ -172,10 +172,11 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end,
 })
 
-vim.keymap.set("n", "<leader>ff", "<CMD>Files<CR>")
-vim.keymap.set("n", "<leader>fg", "<CMD>GitFiles<CR>")
-vim.keymap.set("n", "<leader>fs", "<CMD>Rg<CR>")
-vim.keymap.set("n", "<leader>fb", "<CMD>Buffers<CR>")
+vim.g.fzf_command_prefix = "Fzf"
+vim.keymap.set("n", "<leader>ff", "<CMD>FzfFiles<CR>")
+vim.keymap.set("n", "<leader>fg", "<CMD>FzfGitFiles<CR>")
+vim.keymap.set("n", "<leader>fs", "<CMD>FzfRg<CR>")
+vim.keymap.set("n", "<leader>fb", "<CMD>FzfBuffers<CR>")
 
 local dap, dap_widgets = require("dap"), require("dap.ui.widgets")
 vim.keymap.set("n", "<F1>", dap.continue)
