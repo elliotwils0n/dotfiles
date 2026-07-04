@@ -13,7 +13,6 @@ vim.keymap.set("n", "N", "Nzz")
 
 vim.keymap.set("n", "-", "<CMD>Vex!<CR>")
 vim.keymap.set("n", "<leader>t", "<CMD>vert term<CR>")
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 vim.opt.splitbelow = true
 vim.opt.splitright = true
