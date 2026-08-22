@@ -56,7 +56,6 @@ if command -v gpgconf >/dev/null 2>&1; then
 fi
 
 command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
-
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 
 __prepend_to_path "/usr/local/go/bin"
@@ -67,8 +66,4 @@ __prepend_to_path "$HOME/.cargo/bin"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-if [[ -n "$(echo $XDG_CURRENT_DESKTOP | awk '/GNOME/')" ]]; then
-    alias toggle-animations='gsettings set org.gnome.desktop.interface enable-animations \
-        $(if [[ "$(gsettings get org.gnome.desktop.interface enable-animations)" == "true" ]]; \
-        then echo "false"; else echo "true"; fi)'
-fi
+[[ -s "$HOME/bin/helpers.sh" ]] && source "$HOME/bin/helpers.sh"

@@ -18,11 +18,11 @@ stow -t $HOME -Dv home
 > pacman -S docker neovim rustup go
 > ```
 
-| Utilities                 | Programming       |
-|---------------------------|-------------------|
-| [Docker Engine][docker]   | [Rust][rust]      |
-| [Neovim][neovim]          | [Go][go]          |
-| [IntelliJ Idea][intellij] | [SDKMAN!][sdkman] |
+__Utilities__:
+[Docker Engine][docker] | [Neovim][neovim] |  [IntelliJ Idea][intellij]
+
+__Programming__:
+[Rust][rust] | [Go][go] | [SDKMAN!][sdkman]
 
 <!-- Utilities -->
 [docker]: https://docs.docker.com/engine/install
