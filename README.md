@@ -12,12 +12,6 @@ stow -t $HOME -Dv home
 ```
 
 ## Downloads
-> [!NOTE]
-> For arch linux use pacman:
-> ```shell
-> pacman -S docker neovim rustup go
-> ```
-
 __Utilities__:
 [Docker Engine][docker] | [Neovim][neovim] |  [IntelliJ Idea][intellij]
 
