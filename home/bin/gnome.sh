@@ -26,3 +26,5 @@ for i in {1..9}; do
     gsettings set org.gnome.shell.keybindings "switch-to-application-$i" "[]"
     gsettings set org.gnome.desktop.wm.keybindings "switch-to-workspace-$i" "['<Super>$i']"
 done
+
+gnome-extensions disable ubuntu-dock@ubuntu.com || true
