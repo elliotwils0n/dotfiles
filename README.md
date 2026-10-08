@@ -16,7 +16,7 @@ __Utilities__:
 [Docker Engine][docker] | [Neovim][neovim] |  [IntelliJ Idea][intellij]
 
 __Programming__:
-[Rust][rust] | [Go][go] | [SDKMAN!][sdkman]
+[Rust][rust] | [Go][go] | [SDKMAN!][sdkman] | [nvm][nvm]
 
 <!-- Utilities -->
 [docker]: https://docs.docker.com/engine/install
@@ -26,6 +26,7 @@ __Programming__:
 [rust]: https://www.rust-lang.org/tools/install
 [go]: https://go.dev/doc/install
 [sdkman]: https://sdkman.io/install
+[nvm]: https://github.com/nvm-sh/nvm#install--update-script
 
 ## Shell tools
 ```
