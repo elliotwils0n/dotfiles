@@ -40,6 +40,7 @@ __get_prompt() {
 }
 
 [[ -s "/usr/share/git/git-prompt.sh" ]] && source /usr/share/git/git-prompt.sh
+[[ -s "/usr/share/git-core/contrib/completion/git-prompt.sh" ]] && source /usr/share/git-core/contrib/completion/git-prompt.sh
 
 if type __git_ps1 >/dev/null 2>&1; then
     export GIT_PS1_SHOWDIRTYSTATE=1
@@ -65,5 +66,9 @@ __prepend_to_path "$HOME/.cargo/bin"
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [[ -s "$HOME/bin/helpers.sh" ]] && source "$HOME/bin/helpers.sh"

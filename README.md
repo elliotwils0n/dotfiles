@@ -11,6 +11,11 @@ stow -t $HOME -Sv home
 stow -t $HOME -Dv home
 ```
 
+## Shell tools
+```
+vim git clang gnupg scdaemon bash-completion tmux stow fzf ripgrep tree jq xclip tree-sitter-cli
+```
+
 ## Downloads
 __Utilities__:
 [Docker Engine][docker] | [Neovim][neovim] |  [IntelliJ Idea][intellij]
@@ -28,10 +33,6 @@ __Programming__:
 [sdkman]: https://sdkman.io/install
 [nvm]: https://github.com/nvm-sh/nvm#install--update-script
 
-## Shell tools
-```
-bash-completion gnupg tmux stow fzf ripgrep tree jq tree-sitter-cli
-```
 
 ## Remote servers
 ```shell
