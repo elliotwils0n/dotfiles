@@ -1,7 +1,7 @@
 {
   "plugins": {
     "fzf.vim": {
-      "rev": "023de3c0e158ff9c2b0992175af10be97c2f2158",
+      "rev": "fe5f1fd45418c1a4d905f44a59357008058cc789",
       "src": "https://github.com/junegunn/fzf.vim"
     },
     "nvim-dap": {
@@ -13,11 +13,11 @@
       "src": "https://github.com/elliotwils0n/nvim-dapconfig"
     },
     "nvim-lspconfig": {
-      "rev": "993d048db0d83d8e8ba3f9cb376456321acdcce3",
+      "rev": "4648fd8ba5c678d7e2db75ae44ffac269bb589d8",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "19bdfc04f40ed2ccb3340591d125f759b0406875",
+      "rev": "37e52c733ada9d8d544d53a763140ef1ba404353",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },

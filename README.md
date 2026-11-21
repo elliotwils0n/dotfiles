@@ -13,7 +13,7 @@ stow -t $HOME -Dv home
 
 ## Shell tools
 ```
-vim git clang gnupg scdaemon bash-completion tmux stow fzf ripgrep tree jq xclip tree-sitter-cli
+vim git clang clangd gnupg scdaemon bash-completion tmux stow fzf ripgrep tree jq xclip tree-sitter-cli
 ```
 
 ## Downloads

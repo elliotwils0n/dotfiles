@@ -1,33 +1,37 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# -- history -------------------------------------------------------------------
 HISTSIZE=10000
 HISTFILESIZE=20000
 HISTCONTROL=ignoreboth
-PROMPT_COMMAND='history -a; history -n'
-
 shopt -s histappend
 shopt -s cmdhist
-set -o vi
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
 
+# -- completion ----------------------------------------------------------------
 bind 'set completion-ignore-case on'
 bind 'set show-all-if-ambiguous on'
 bind 'set colored-stats on'
 bind 'TAB: menu-complete'
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
 
+# -- aliases -------------------------------------------------------------------
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias tree='tree -C'
 
-__prepend_to_path() {
-    local dir="$1"
-    if [[ -d "$dir" ]]; then
-	    echo "$PATH" | grep -q "$dir" || PATH="${dir}:${PATH}"
-    fi
-}
+# -- gpg ssh -------------------------------------------------------------------
+if command -v gpgconf >/dev/null 2>&1; then
+    export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+    gpgconf --launch gpg-agent
+fi
 
+# -- shell tools ---------------------------------------------------------------
+command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+
+# -- prompt --------------------------------------------------------------------
 __get_prompt() {
     local prompt_status='$( [ $? -eq 0 ] && echo "\[\e[1;32m\]>\[\e[0m\]" || echo "\[\e[1;31m\]>\[\e[0m\]" )'
     local prompt_dir='\[\e[1;36m\]\W\[\e[0m\]'
@@ -48,22 +52,27 @@ if type __git_ps1 >/dev/null 2>&1; then
     export GIT_PS1_SHOWCOLORHINTS=1
     PROMPT_COMMAND='history -a; history -n; __git_ps1 "$(__get_prompt)" " "'
 else
+    PROMPT_COMMAND='history -a; history -n'
     PS1="$(__get_prompt) "
 fi
 
-if command -v gpgconf >/dev/null 2>&1; then
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-    gpgconf --launch gpg-agent
-fi
-
-command -v nvim >/dev/null 2>&1 && export EDITOR="nvim" || export EDITOR="vim"
-command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+# -- path ----------------------------------------------------------------------
+__prepend_to_path() {
+    local dir="$1"
+    if [[ -d "$dir" ]]; then
+        case ":${PATH}:" in
+            *:"$dir":*) ;;
+            *) export PATH="${dir}:${PATH}" ;;
+        esac
+    fi
+}
 
 __prepend_to_path "/usr/local/go/bin"
 __prepend_to_path "$HOME/opt/jdtls/bin"
 __prepend_to_path "$HOME/go/bin"
 __prepend_to_path "$HOME/.cargo/bin"
 
+# -- tools ---------------------------------------------------------------------
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
