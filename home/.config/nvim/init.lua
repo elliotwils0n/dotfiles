@@ -50,7 +50,6 @@ vim.opt.wildmode = "list:longest"
 
 vim.opt.autocomplete = true
 vim.opt.completeopt = { "menuone", "noselect" }
-vim.opt.complete:append("o")
 
 vim.opt.swapfile = false
 vim.opt.undofile = true
@@ -124,6 +123,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
         -- Enable auto-completion.
         if client:supports_method("textDocument/completion") then
+            vim.opt_local.complete:append("o")
             vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
         end
         -- Auto-format ("lint") on save.

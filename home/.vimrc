@@ -51,7 +51,6 @@ set wildmode=list:longest
 
 set autocomplete
 set completeopt=menuone,noselect
-set complete+=o
 
 set noswapfile
 set undofile
