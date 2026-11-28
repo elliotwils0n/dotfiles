@@ -1,6 +1,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# -- settings ------------------------------------------------------------------
+set -o vi
+
 # -- history -------------------------------------------------------------------
 HISTSIZE=10000
 HISTFILESIZE=20000
